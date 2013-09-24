@@ -4,68 +4,84 @@
 <style> <!--this section is just a css style. -->
 body
 {
-	background-color:#003000;
-	margin:0px;
+    background-color:#003000;
+    margin:0px;
 }
 
 .title
 {
-	background-color:#008000;
-	margin-left:auto;
-	margin-right:auto;
-	width:70%;
-	height:200px;
-	border-top-left-radius:10% 50%;
-	border-top-right-radius:10% 50%;
-	text-align:center;
-	color:#EBFFEB;
-	font-size:80px;
+    background-color:#008000;
+    margin-left:auto;
+    margin-right:auto;
+    width:70%;
+    height:200px;
+    border-top-left-radius:10% 50%;
+    border-top-right-radius:10% 50%;
+    text-align:center;
+    color:#EBFFEB;
+    font-size:80px;
 
 }
 
 .secTitle
 {
-	font size:50px;
+    font size:50px;
 }
 
 .linkBar
 {
-	background-color:#008000;
-	margin-left:auto;
-	margin-right:auto;
-	width:70%;
-	height:100px;
-	text-align:center;
-	color:#EBFFEB;
+    background-color:#008000;
+    margin-left:auto;
+    margin-right:auto;
+    width:70%;
+    height:100px;
+    text-align:center;
+    color:#EBFFEB;
 }
 
 .mainBody
 {
-	background-color:#008000;
-	margin-left:auto;
-	margin-right:auto;
-	width:70%;
-	height:700px;
-	color:#EBFFEB;
-	font-size:20px;
+    background-color:#008000;
+    margin-left:auto;
+    margin-right:auto;
+    width:70%;
+    height:700px;
+    color:#EBFFEB;
+    font-size:20px;
 }
 </style><!--end of style-->
 </head>
 <div class="title">
-	<p>
-		Jormungandr Studios
-	</p>
-	<p style="font-size:40">
-		Special Development Squadron
-	</p>
+    <p>
+        Jormungandr Studios
+    </p>
+    <p style="font-size:40">
+        Special Development Squadron
+    </p>
 </div>
 <div class="linkBar">
 </div>
 <div class="mainBody">
-	What is your name?
-		<form action="form2"><!--when form is filled out, goes to form2.html-->
-  		<input name="bob" /><!--saves the form input as a variable called 'bob'-->
-  	<input type="submit" /><!--creates a button to be pressed-->
+    <p>
+        Administrative controls
+    </p>
+        <form action="form2"><!--when form is filled out, goes to form2.html-->
+            <p>
+                SSID Name
+        <input name="ssidName" /><!--saves the form input as a variable called 'bob'-->
+                </p>
+            <p>
+            Time until timeout
+        <input name="timeout" /><!--saves the form input as a variable called 'bob'-->
+                </p>
+            <p>
+                Time is in:<br>
+                <input type="radio" name = "timeUnit" value = "seconds">Seconds<br>
+                <input type = "radio" name = "timeUnit" value = "minutes">Minutes<br>
+                <input type = "radio" name = "timeUnit" value = "hours">Hours<br>
+                <input type = "radio" name = "timeUnit" value = "days">Days
+            </p>
+    <input type="submit" /><!--creates a button to be pressed-->
 </div>
 
 </html>
