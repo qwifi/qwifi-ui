@@ -1,7 +1,8 @@
 
 from wsgiref.simple_server import make_server
+from cgi import parse_qs, escape
 
-#lines 5-97 (the following ones) consists of HTML code to be output to the client
+#lines 6-97 (the following ones) consists of HTML code to be output to the client
 html="""<html>
 <head>
 <link rel="stylesheet" type="text/css" href="page.css">
@@ -75,7 +76,7 @@ margin:0px;
     <p>
         Administrative controls
     </p>
-        <form method="post" action="parsing_post"><!--when form is filled out, goes to form2.html-->
+        <form method="post" action="adminUI.py"><!--when form is filled out, goes to form2.html-->
             <p>
                 SSID Name
         <input name="ssidName" /><!--saves the form input as a variable called 'bob'-->
@@ -93,10 +94,40 @@ margin:0px;
             </p>
     <input type="submit" /><!--creates a button to be pressed-->
 </div>
-
 </html>"""
 
 def adminUI(environ, start_response):
+
+   configFile=open('config.txt', 'r')
+   pastTimeout=configFile.readline().rstrip()
+   pastTimeUnit=configFile.readline().rstrip()
+   pastSsidName=configFile.readline().rstrip()
+   configFile.close()
+
+   # the environment variable CONTENT_LENGTH may be empty or missing
+   try:
+      request_body_size = int(environ.get('CONTENT_LENGTH', 0))
+   except (ValueError):
+      request_body_size = 0
+
+
+   request_body = environ['wsgi.input'].read(request_body_size)
+   d = parse_qs(request_body)
+
+   timeout = d.get('timeout', [''])[0] # grabs form input
+   timeUnit = d.get('timeUnit', [])
+   ssidName = d.get('ssidName',[])
+   timeout =(timeout or pastTimeout)
+   timeUnit = (timeUnit or pastTimeUnit)
+   ssidName=(ssidName or pastSsidName)
+   
+   configFile=open('config.txt','w')
+   configFile.write(str(timeout))
+   configFile.write('\n')
+   configFile.write(str(timeUnit))
+   configFile.write('\n')
+   configFile.write(str(ssidName))
+   configFile.close()
 
    response_body=html
 
@@ -104,8 +135,14 @@ def adminUI(environ, start_response):
    response_headers = [('Content-Type', 'text/html'),
                   ('Content-Length', str(len(response_body)))]
    start_response(status, response_headers)
+   
+
+   
+   
 
    return response_body
+  
+
 
 httpd = make_server('localhost', 8051, adminUI)
 print "Running admin interface, serving on port 8051"
