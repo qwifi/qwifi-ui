@@ -1,4 +1,3 @@
-
 from wsgiref.simple_server import make_server
 from cgi import parse_qs, escape
 
@@ -98,7 +97,7 @@ margin:0px;
 
 def application(environ, start_response):
 
-   configFile=open('c:/config.txt', 'r')
+   configFile=open('c:/config.txt', 'r')#fileReplace
    pastTimeout=configFile.readline().rstrip()
    pastTimeUnit=configFile.readline().rstrip()
    pastSsidName=configFile.readline().rstrip()
@@ -110,9 +109,6 @@ def application(environ, start_response):
    except (ValueError):
       request_body_size = 0
 
-   # When the method is POST the query string will be sent
-   # in the HTTP request body which is passed by the WSGI server
-   # in the file like wsgi.input environment variable.
    request_body = environ['wsgi.input'].read(request_body_size)
    d = parse_qs(request_body)
 
@@ -123,7 +119,7 @@ def application(environ, start_response):
    timeUnit = (timeUnit or pastTimeUnit)
    ssidName=(ssidName or pastSsidName)
    
-   configFile=open('C:/config.txt','w')
+   configFile=open('C:/config.txt','w')#fileReplace
    configFile.write(str(timeout))
    configFile.write('\n')
    configFile.write(str(timeUnit))
