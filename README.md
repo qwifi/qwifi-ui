@@ -1,2 +1,2 @@
-qwifi-admin
+qwifi-ui
 ===========
