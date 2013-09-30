@@ -3,7 +3,7 @@ import string, random
 import MySQLdb
 
 def application(environ, start_response):
-	db = MySQLdb.connect("localhost","rad","rad","radius")#host, user, password, db
+	db = MySQLdb.connect("localhost","radius","radius","radius")#host, user, password, db
 	c = db.cursor()
 
 	pwsize = 10
