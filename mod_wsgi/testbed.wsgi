@@ -11,6 +11,17 @@ def application(environ, start_response):
 
    backGroundColor='003000'
    foreGroundColor='008000'
+   try:
+	configFile=open(fileLocation, 'r')
+	pastTimeout=configFile.readline().rstrip()
+	pastTimeUnit=configFile.readline().rstrip()
+	pastSsidName=configFile.readline().rstrip()
+	configFile.close()
+   except:
+	configFile=open(fileLocation, 'w')
+	configFile.write('8000\n')
+	configFile.write('seconds\n')
+	configFile.write('standard')
 
    response_body=html %(backGroundColor,foreGroundColor,foreGroundColor,foreGroundColor,'<p>Administrative controls</p><form method="post" action="adminUI"><p>SSID Name<input name="ssidName" /></p><p>Time until timeout<input name="timeout" /></p><p>Time is in:<br><input type="radio" name = "timeUnit" value = "seconds">Seconds<br><input type = "radio" name = "timeUnit" value = "minutes">Minutes<br><input type = "radio" name = "timeUnit" value = "hours">Hours<br><input type = "radio" name = "timeUnit" value = "days">days</p><input type="submit" />')
 
