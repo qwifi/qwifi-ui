@@ -4,8 +4,7 @@ from cgi import parse_qs, escape
 
 fileLocation='c:\config.txt'#fileReplace
 
-#lines 9-101 (the following ones) consists of HTML code to be output to the client
-html=(open('C:/Program Files (x86)/Apache Software Foundation/Apache2.2/htdocs/form3.txt','r').read())#fileReplace
+html=(open('C:/Program Files (x86)/Apache Software Foundation/Apache2.2/htdocs/base.txt','r').read())#fileReplace
 
 
 def application(environ, start_response):
@@ -43,7 +42,7 @@ def application(environ, start_response):
    configFile.write(str(ssidName))
    configFile.close()
 
-   response_body=html
+   response_body=html%('Changes Saved')
 
    status = '200 OK'
    response_headers = [('Content-Type', 'text/html'),
