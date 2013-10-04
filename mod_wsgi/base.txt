@@ -1,0 +1,76 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="page.css">
+<style> 
+body
+{
+    background-color:#003000;
+    margin:0px;
+}
+p
+{
+margin:0px;
+}
+
+.title
+{
+    background-color:#008000;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:0px;
+    margin-bottom:0px;
+    width:70%%;
+    height:150px;
+    border-top-left-radius:10%% 50%%;
+    border-top-right-radius:10%% 50%%;
+    text-align:center;
+    color:#EBFFEB;
+    font-size:80px;
+
+}
+
+.secTitle
+{
+    font-size:50px;
+}
+
+.linkBar
+{
+    background-color:#008000;
+    margin-left:auto;
+    margin-right:auto;
+    width:70%%;
+    height:40px;
+    text-align:center;
+    color:#EBFFEB;
+}
+
+.mainBody
+{
+    background-color:#008000;
+    margin-left:auto;
+    margin-right:auto;
+    width:70%%;
+    height:700px;
+    color:#EBFFEB;
+    font-size:20px;
+}
+</style><!--end of style-->
+</head>
+<div class="title">
+    <p>
+        Jormungandr Studios
+    </p>
+    <p style="font-size:40">
+        Special Development Squadron
+    </p>
+</div>
+<div class="linkBar">
+<a href="testbed">Administrative Settings</a>
+</div>
+<div class="mainBody">
+<p>
+%s
+</p>
+</div>
+</html>
