@@ -10,6 +10,8 @@ html=(open('C:/Program Files (x86)/Apache Software Foundation/Apache2.2/htdocs/b
 def application(environ, start_response):
 
    returnMessage='Changes Saved!'
+   backGroundColor='003000'
+   foreGroundColor='008000'
 
    try:
 	configFile=open(fileLocation, 'r')
@@ -19,7 +21,9 @@ def application(environ, start_response):
 	configFile.close()
    except:
     returnMessage='ERROR! Could not open file'
-    response_body=html%(returnMessage)
+    backGroundColor='300000'
+    foreGroundColor='800000'
+    response_body=html%(backGroundColor,foreGroundColor,foreGroundColor,foreGroundColor,returnMessage)
     status = '200 OK'
     response_headers = [('Content-Type', 'text/html'),
                   ('Content-Length', str(len(response_body)))]
@@ -65,9 +69,11 @@ def application(environ, start_response):
 	configFile.close()
    except:
 	returnMessage='ERROR! Could not save to file!'
+	backGroundColor='300000'
+	foreGroundColor='800000'
 	
 
-   response_body=html%(returnMessage)
+   response_body=html%(backGroundColor,foreGroundColor,foreGroundColor,foreGroundColor,returnMessage)
 
    status = '200 OK'
    response_headers = [('Content-Type', 'text/html'),
