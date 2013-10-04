@@ -9,11 +9,22 @@ html=(open('C:/Program Files (x86)/Apache Software Foundation/Apache2.2/htdocs/b
 
 def application(environ, start_response):
 
-   configFile=open(fileLocation, 'r')
-   pastTimeout=configFile.readline().rstrip()
-   pastTimeUnit=configFile.readline().rstrip()
-   pastSsidName=configFile.readline().rstrip()
-   configFile.close()
+   returnMessage='Changes Saved!'
+
+   try:
+	configFile=open(fileLocation, 'r')
+	pastTimeout=configFile.readline().rstrip()
+	pastTimeUnit=configFile.readline().rstrip()
+	pastSsidName=configFile.readline().rstrip()
+	configFile.close()
+   except:
+    returnMessage='ERROR! Could not open file'
+    response_body=html%(returnMessage)
+    status = '200 OK'
+    response_headers = [('Content-Type', 'text/html'),
+                  ('Content-Length', str(len(response_body)))]
+    start_response(status, response_headers)
+    return response_body
 
    # the environment variable CONTENT_LENGTH may be empty or missing
    try:
@@ -28,21 +39,35 @@ def application(environ, start_response):
    d = parse_qs(request_body)
 
    timeout = d.get('timeout', [''])[0] # Takes in the form input.
-   timeUnit = d.get('timeUnit', []) 
+   timeUnit = d.get('timeUnit',[]) 
    ssidName = d.get('ssidName',[])
    timeout =(timeout or pastTimeout)
-   timeUnit = (timeUnit or pastTimeUnit)
    ssidName=(ssidName or pastSsidName)
+   timeUnit=str(timeUnit)
    
-   configFile=open(fileLocation,'w')
-   configFile.write(str(timeout))
-   configFile.write('\n')
-   configFile.write(str(timeUnit))
-   configFile.write('\n')
-   configFile.write(str(ssidName))
-   configFile.close()
+   timeout = int(timeout)
+   
+   if timeUnit is 'minutes':#if else statements determine what the selection for timeUnit was
+		timeout=timeout*60#multiplies the timeout variable based on what the timeUnit was into seconds
+   elif timeUnit =='hours':
+		timeout=timeout*3600
+   elif timeUnit == 'days':
+		timeout=timeout*86400 
+   
+   
+   try:
+	configFile=open(fileLocation,'w')
+	configFile.write(str(timeout))
+	configFile.write('\n')
+	configFile.write(timeUnit)
+	configFile.write('\n')
+	configFile.write(str(ssidName))
+	configFile.close()
+   except:
+	returnMessage='ERROR! Could not save to file!'
+	
 
-   response_body=html%('Changes Saved')
+   response_body=html%(returnMessage)
 
    status = '200 OK'
    response_headers = [('Content-Type', 'text/html'),
