@@ -4,7 +4,7 @@
 <style> 
 body
 {
-    background-color:#003000;
+    background-color:#%s;
     margin:0px;
 }
 p
@@ -14,7 +14,7 @@ margin:0px;
 
 .title
 {
-    background-color:#008000;
+    background-color:#%s;
     margin-left:auto;
     margin-right:auto;
     margin-top:0px;
@@ -36,7 +36,7 @@ margin:0px;
 
 .linkBar
 {
-    background-color:#008000;
+    background-color:#%s;
     margin-left:auto;
     margin-right:auto;
     width:70%%;
@@ -47,7 +47,7 @@ margin:0px;
 
 .mainBody
 {
-    background-color:#008000;
+    background-color:#%s;
     margin-left:auto;
     margin-right:auto;
     width:70%%;
