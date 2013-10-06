@@ -1,6 +1,5 @@
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="page.css">
 
 <style> 
 
@@ -12,39 +11,54 @@ body
 
 p
 {
-margin:0px;
+    margin:0px;
 }
 
 .title
 {
-    background-color:#008000;
+    color:#EBFFEB;
+    font-size:35px;
+    text-align:center;
+
+    width:700px;
+    margin-top:0px;
     margin-left:auto;
     margin-right:auto;
-    margin-top:0px;
     margin-bottom:0px;
+    
+    background-color:#008000;
+
+    padding-bottom:10px;
+    border-left:2px solid black;
     border-top-left-radius:10%% 50%%;
     border-top-right-radius:10%% 50%%;
-    text-align:center;
-    color:#EBFFEB;
-    font-size:50px;
-    width:700px;
-
-}
-
-.secTitle
-{
-    font-size:50px;
 }
 
 .linkBar
 {
-    background-color:#008000;
-    margin-left:auto;
-    margin-right:auto;
+    color:#EBFFEB;
+    text-align:center;
+    
     height:40px;
     width:700px;
-    text-align:center;
-    color:#EBFFEB;
+    margin-left:auto;
+    margin-right:auto;
+    background-color:#008000;
+
+    padding-top:10px;
+    padding-bottom:10px;
+}
+#link
+{
+    color:white;
+    padding:10px;
+    text-decoration:none;
+    border: 2px solid black;
+}
+#link:hover
+{
+  color: black;
+  background-color: DarkSlateGray;
 }
 
 .mainBody
@@ -57,23 +71,32 @@ margin:0px;
     color:#EBFFEB;
     font-size:20px;
 }
+#text, li
+{
+  font-size:15px;
+}
+#intro
+{
+  font-size:18px;
+  padding-bottom:10px;
+}
 </style><!--end of style-->
 
 
 </head>
   <div class="title">
     <p> Qwifi Administrator </p>
-    <p> Interface</p>
+    <p> Interface </p>
   </div>
 
   <div class="linkBar">
-    <a href="./testbed">Administrative Settings</a>
+    <a href="./adminUI" id="link">Home</a>
+    <a href="./testbed" id="link">Display/Edit</a>
   </div>
 
   <div class="mainBody">
     <p>
       %s
     </p>
-
   </div>
 </html>

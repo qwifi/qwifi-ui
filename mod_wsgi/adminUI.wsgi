@@ -2,13 +2,14 @@
 from cgi import parse_qs, escape
 
 
-fileLocation='c:\config.txt'#fileReplace
+fileLocation='/home/webserver/config.txt'#fileReplace
 
-html=(open('C:/Program Files (x86)/Apache Software Foundation/Apache2.2/htdocs/base.txt','r').read())#fileReplace
+html=(open('/usr/local/wsgi/scripts/base.txt','r').read())#fileReplace
 
 
 def application(environ, start_response):
 
+   
    configFile=open(fileLocation, 'r')
    pastTimeout=configFile.readline().rstrip()
    pastTimeUnit=configFile.readline().rstrip()
@@ -42,7 +43,8 @@ def application(environ, start_response):
    configFile.write(str(ssidName))
    configFile.close()
 
-   response_body=html%('Changes Saved')
+   response_body=html %('<p id="intro">This is the mechanism used to make changes to your access point.</p><p id="text">How to make changes:<ol id="list_one"><li> Navigate to the Display/Edit page using the link above </li><li> Enter the requested data: </li><ul><li> SSID </li><li> Time until timeout </li><li> Unit of time desired </li></ul><li> Save your changes. </li></ol></p>')
+
 
    status = '200 OK'
    response_headers = [('Content-Type', 'text/html'),
