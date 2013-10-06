@@ -1,4 +1,3 @@
-
 from cgi import parse_qs, escape
 
 
@@ -24,7 +23,7 @@ def application(environ, start_response):
 	configFile.write('standard')
 	
 
-   formString='<p>Administrative controls</p><form method="post" action="adminUI"><p>SSID Name<input name="ssidName" value="'
+   formString='<p>Administrative controls</p><form method="post" action="update"><p>SSID Name<input name="ssidName" value="'
    formString+=str(pastSsidName)
    formString+='" /></p><p>Time until timeout<input name="timeout" value="'
    formString+=str(pastTimeout)
