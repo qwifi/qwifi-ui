@@ -90,7 +90,7 @@ p
   </div>
 
   <div class="linkBar">
-    <a href="./testbed" id="link">Update Configuration</a>
+    <a href="./update" id="link">Update Configuration</a>
   </div>
 
   <div class="mainBody">
