@@ -10,17 +10,30 @@ def application(environ, start_response):
 	user = ''.join(random.sample(string.ascii_lowercase, pwsize))
 	password = ''.join(random.sample(string.ascii_lowercase, pwsize))
 
-	sql = "INSERT INTO radcheck SET username=\'" + user + "\',attribute='Cleartext-Password',op=':=',value=\'" + password + "\';"
+	query = "INSERT INTO radcheck SET username='%(username)s',attribute='Cleartext-Password',op=':=',value='%(password)s';" % { 'username' : user, 'password' : password }
 
 	try:
  		#Execute the sql command
- 		c.execute(sql)
+ 		c.execute(query)
   		#commit the changes to the database
   		db.commit()
 	except:
   		#Something bad happened rollback the changes
   		db.rollback()
-  		print("Error: Inserting into DATABASE")
+  		print("Error adding credentials to database")
+
+
+	query = "INSERT INTO radcheck SET username='%(username)s',attribute='Session-Timeout',op=':=',value='%(timeout)s';" % { 'username' : user, 'timeout' : 10 }
+
+	try:
+ 		#Execute the sql command
+ 		c.execute(query)
+  		#commit the changes to the database
+  		db.commit()
+	except:
+  		#Something bad happened rollback the changes
+  		db.rollback()
+		print("Error adding session timeout to database")
 
   	sql = "SELECT * FROM radcheck;"
 	c.execute(sql)
