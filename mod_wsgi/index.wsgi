@@ -1,12 +1,8 @@
 from cgi import parse_qs, escape
 
-
-fileLocation='c:\config.txt'#fileReplace
-
-html=(open('C:/Program Files (x86)/Apache Software Foundation/Apache2.2/htdocs/base.txt','r').read())#fileReplace
-
-
 def application(environ, start_response):
+   fileLocation=environ['CONFIGURATION_FILE']
+   html=(open(environ['TEMPLATE_BASE'] + '/base','r').read()) 
 
    backGroundColor='003000'
    foreGroundColor='008000'
@@ -23,7 +19,7 @@ def application(environ, start_response):
 	configFile.write('standard')
 	
 
-   formString='<p>Administrative controls</p><form method="post" action="update"><p>SSID Name<input name="ssidName" value="'
+   formString='<p>Administrative controls</p><form method="post" action="/config/update"><p>SSID Name<input name="ssidName" value="'
    formString+=str(pastSsidName)
    formString+='" /></p><p>Time until timeout<input name="timeout" value="'
    formString+=str(pastTimeout)

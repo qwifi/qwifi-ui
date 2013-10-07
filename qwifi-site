@@ -28,6 +28,9 @@
 		Allow from all
 	</Directory>
 
+	SetEnv CONFIGURATION_FILE /var/www/config/current
+	SetEnv TEMPLATE_BASE /usr/local/wsgi/templates
+
 	ErrorLog ${APACHE_LOG_DIR}/error.log
 
 	# Possible values include: debug, info, notice, warn, error, crit,
