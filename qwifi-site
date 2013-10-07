@@ -22,7 +22,12 @@
 		Allow from all
 	</Directory>
 
-	WSGIScriptAlias /scripts /usr/local/wsgi/scripts/
+	Alias /config/current /var/www/config/current
+	WSGIScriptAliasMatch ^/(.*)\.css$ /usr/local/wsgi/resources/css/$1
+	WSGIScriptAliasMatch ^/(.*)/$ /usr/local/wsgi/scripts/$1/index.wsgi
+	WSGIScriptAliasMatch ^/(.+) /usr/local/wsgi/scripts/$1.wsgi
+	WSGIScriptAliasMatch / /usr/local/wsgi/scripts/index.wsgi
+
 	<Directory /usr/local/wsgi/scripts>
 		Order allow,deny
 		Allow from all
