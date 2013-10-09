@@ -35,13 +35,9 @@ def application(environ, start_response):
   		db.rollback()
 		print("Error adding session timeout to database")
 
-  	sql = "SELECT * FROM radcheck;"
-	c.execute(sql)
-	data = c.fetchall()
-	current = data[-1]
-	#code = current[1] +";" +current[4] +";;"
-
-	code = "WIFI:T:WPAEAP;S:qwifi;P:" + current[4] + ";H:false;U:" + current[1] + ";E:PEAP;N:MSCHAPV2;;"
+	code = "WIFI:T:WPAEAP;S:qwifi;P:%(password)s;H:false;U:%(user)s;E:PEAP;N:MSCHAPV2;;" % {'user' : user, 'password' : password}
+	
+	print(code)
 
 	enc = Encoder()
 	im = enc.encode(code, {'width':200})
