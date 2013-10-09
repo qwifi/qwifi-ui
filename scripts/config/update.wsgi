@@ -8,23 +8,6 @@ def application(environ, start_response):
    backGroundColor='003000'
    foreGroundColor='008000'
 
-   try:
-	configFile=open(fileLocation, 'r')
-	pastTimeout=configFile.readline().rstrip()
-	pastTimeUnit=configFile.readline().rstrip()
-	pastSsidName=configFile.readline().rstrip()
-	configFile.close()
-   except:
-    returnMessage='ERROR! Could not open file'
-    backGroundColor='300000'
-    foreGroundColor='800000'
-    response_body=html%(backGroundColor,foreGroundColor,foreGroundColor,foreGroundColor,returnMessage)
-    status = '200 OK'
-    response_headers = [('Content-Type', 'text/html'),
-                  ('Content-Length', str(len(response_body)))]
-    start_response(status, response_headers)
-    return response_body
-
    # the environment variable CONTENT_LENGTH may be empty or missing
    try:
       request_body_size = int(environ.get('CONTENT_LENGTH', 0))
@@ -40,27 +23,30 @@ def application(environ, start_response):
    timeout = d.get('timeout', [''])[0] # Takes in the form input.
    timeUnit = d.get('timeUnit',[]) 
    ssidName = d.get('ssidName',[])
-   timeout =(timeout or pastTimeout)
-   ssidName=(ssidName or pastSsidName)
    timeUnit=str(timeUnit)
+   ssidName=str(ssidName)
    
    timeout = int(timeout)
    
-   if timeUnit is 'minutes':#if else statements determine what the selection for timeUnit was
-		timeout=timeout*60#multiplies the timeout variable based on what the timeUnit was into seconds
+   if timeUnit == 'minutes':#if else statements determine what the selection for timeUnit was
+	timeout=timeout*60#multiplies the timeout variable based on what the timeUnit was into seconds
    elif timeUnit =='hours':
-		timeout=timeout*3600
+	timeout=timeout*3600
    elif timeUnit == 'days':
-		timeout=timeout*86400 
-   
+	timeout=timeout*86400
+   else:
+	timeout=timeout
    
    try:
 	configFile=open(fileLocation,'w')
+	configFile.write('Timeout=')
 	configFile.write(str(timeout))
 	configFile.write('\n')
+	configFile.write('TimeUnit=')
 	configFile.write(timeUnit)
 	configFile.write('\n')
-	configFile.write(str(ssidName))
+	configFile.write('SSIDName=')
+	configFile.write(ssidName)
 	configFile.close()
    except:
 	returnMessage='ERROR! Could not save to file!'
