@@ -9,13 +9,22 @@ def application(environ, start_response):
    try:
 	configFile=open(fileLocation, 'r')
 	pastTimeout=configFile.readline().rstrip()
+	pastTimeout=pastTimeout.replace('Timeout=','')
 	pastTimeUnit=configFile.readline().rstrip()
+	pastTimeUnit=pastTimeUnit.replace('TimeUnit=','')
 	pastSsidName=configFile.readline().rstrip()
+	pastSsidName=pastSsidName.replace('SSIDName=','')
+	pastSsidName=pastSsidName.replace("'",'')
+	pastSsidName=pastSsidName.replace('[','')
+	pastSsidName=pastSsidName.replace(']','')
 	configFile.close()
    except:
 	configFile=open(fileLocation, 'w')
+	configFile.write('Timeout=')
 	configFile.write('8000\n')
+	configFile.write('TimeUnit=')
 	configFile.write('seconds\n')
+	configFile.write('SSIDName=')
 	configFile.write('standard')
 	configFile.close()
 	pastSsidName='standard'
@@ -23,7 +32,7 @@ def application(environ, start_response):
 	pastTimeUnit='seconds'
 	
 
-   formString='<p>Administrative controls</p><form method="post" action="/config/update"><p>SSID Name<input name="ssidName" value="'
+   formString='<p>Administrative controls</p><form method="post" action="update"><p>SSID Name<input name="ssidName" value="'
    formString+=str(pastSsidName)
    formString+='" /></p><p>Time until timeout<input name="timeout" value="'
    formString+=str(pastTimeout)
