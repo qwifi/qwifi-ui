@@ -31,7 +31,7 @@ def application(environ, start_response):
 		cursor.execute(query) 
 		db.commit()
 	except:
-  		db.rollback()
+		db.rollback()
 		status = '500 Internal Server Error'
 		result = "Failed to update database"	
 
