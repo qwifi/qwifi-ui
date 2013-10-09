@@ -17,6 +17,10 @@ def application(environ, start_response):
 	configFile.write('8000\n')
 	configFile.write('seconds\n')
 	configFile.write('standard')
+	configFile.close()
+	pastSsidName='standard'
+	pastTimeout=8000
+	pastTimeUnit='seconds'
 	
 
    formString='<p>Administrative controls</p><form method="post" action="/config/update"><p>SSID Name<input name="ssidName" value="'
