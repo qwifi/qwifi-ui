@@ -32,7 +32,7 @@ def application(environ, start_response):
 		db.commit()
 	except:
 		status = '500 Internal Server Error'
-		result = "Failed to connect to database"	
+		result = "Failed to update database"	
 
 	hostapd_result = call(["/usr/sbin/hostapd_cli", "disassociate", station_id])
 	
