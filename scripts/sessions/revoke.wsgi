@@ -9,8 +9,8 @@ def application(environ, start_response):
 	result = "Default result (this is a bug)"
 
 	query_dictionary = parse_qs(environ['QUERY_STRING'])
+	
 	username = query_dictionary.get('user', [''])[0]
-
 	if (username == ''):
 		result = "Invalid user argument"
 		start_response(status, response_headers)
@@ -32,8 +32,7 @@ def application(environ, start_response):
 		db.commit()
 	except:
 		status = '500 Internal Server Error'
-		result = "Failed to connect to database"
-	
+		result = "Failed to connect to database"	
 
 	hostapd_result = call(["/usr/sbin/hostapd_cli", "disassociate", station_id])
 	
