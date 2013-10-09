@@ -5,7 +5,7 @@
 
 body
 {
-    background-color:#003000;
+    background-color:#%s;
     margin:0px;
 }
 
@@ -26,7 +26,7 @@ p
     margin-right:auto;
     margin-bottom:0px;
     
-    background-color:#008000;
+    background-color:#%s;
 
     padding-bottom:10px;
     border-top-left-radius:10%% 50%%;
@@ -42,7 +42,7 @@ p
     width:700px;
     margin-left:auto;
     margin-right:auto;
-    background-color:#008000;
+    background-color:#%s;
 
     padding-top:10px;
     padding-bottom:10px;
@@ -63,7 +63,7 @@ p
 
 .mainBody
 {
-    background-color:#008000;
+    background-color:#%s;
     margin-left:auto;
     margin-right:auto;
     width:700px;
