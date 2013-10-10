@@ -1,6 +1,7 @@
 from qrencode import Encoder
 import string, random
 import MySQLdb
+import qwifiutils
 
 def application(environ, start_response):
 	db = MySQLdb.connect("localhost", "radius", "radius", "radius")  # host, user, password, db
@@ -22,7 +23,11 @@ def application(environ, start_response):
 		db.rollback()
 		print("Error adding credentials to database")
 
-	query = "INSERT INTO radcheck SET username='%(username)s',attribute='Session-Timeout',op=':=',value='%(timeout)s';" % { 'username' : user, 'timeout' : 10 }
+	config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
+
+	timeout = config.getint('main', 'timeout')
+
+	query = "INSERT INTO radcheck SET username='%(username)s',attribute='Session-Timeout',op=':=',value='%(timeout)s';" % { 'username' : user, 'timeout' : timeout }
 
 	try:
 		# Execute the sql command
@@ -44,5 +49,5 @@ def application(environ, start_response):
 	status = '200 OK'
 	response_headers = [('Content-type', 'image/png')]
 	start_response(status, response_headers)
-	
+
 	return file("/tmp/out.png")
