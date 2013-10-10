@@ -36,7 +36,7 @@
 	</Directory>
 
 	SetEnv CONFIGURATION_FILE /var/www/config/current
-	SetEnv TEMPLATE_BASE /usr/local/wsgi/templates
+	SetEnv RESOURCE_BASE /usr/local/wsgi/resources
 
 	ErrorLog ${APACHE_LOG_DIR}/error.log
 

@@ -1,8 +1,7 @@
 from cgi import parse_qs, escape
-import ConfigParser, os
 
 def application(environ, start_response):
-	html = (open(environ['TEMPLATE_BASE'] + '/base', 'r').read())
+	html = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read())
 
 	returnMessage = 'Changes Saved!'
 	backGroundColor = '003000'

@@ -22,7 +22,7 @@ def application(environ, start_response):
 	ssid = config.get('main', 'ssid')
 	units = config.get('display', 'units')
 
-	html = (open(environ['TEMPLATE_BASE'] + '/base', 'r').read())
+	html = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read())
 
 	formString = '<p>Administrative controls</p><form method="post" action="/config/update"><p>SSID Name<input name="ssid" value="'
 	formString += ssid
