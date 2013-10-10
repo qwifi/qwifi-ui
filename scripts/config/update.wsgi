@@ -1,4 +1,5 @@
 from cgi import parse_qs, escape
+import ConfigParser, os
 
 def application(environ, start_response):
 	html = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read())
