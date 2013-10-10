@@ -1,22 +1,12 @@
 from cgi import parse_qs, escape
 import ConfigParser, os
+import qwifiutils
 
 def application(environ, start_response):
 	backGroundColor = '003000'
 	foreGroundColor = '008000'
 
-	config = ConfigParser.ConfigParser()
-
-	config.add_section('main')
-	config.set('main', 'timeout', '10')
-	config.set('main', 'ssid', 'qwifi')
-	config.add_section('display')
-	config.set('display', 'units', 'seconds')
-
-	config_path = environ['CONFIGURATION_FILE']
-	if (os.path.isfile(config_path)):
-		config.read(config_path)
-		#TODO: handle parsing exceptions
+	config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
 
 	timeout = config.getint('main', 'timeout')
 	ssid = config.get('main', 'ssid')
