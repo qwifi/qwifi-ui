@@ -1,7 +1,7 @@
 from cgi import parse_qs, escape
+import ConfigParser, os
 
 def application(environ, start_response):
-	fileLocation = environ['CONFIGURATION_FILE']
 	html = (open(environ['TEMPLATE_BASE'] + '/base', 'r').read())
 
 	returnMessage = 'Changes Saved!'
@@ -21,10 +21,8 @@ def application(environ, start_response):
 	d = parse_qs(request_body)
 
 	timeout = d.get('timeout', [''])[0]  # Takes in the form input.
-	timeUnit = d.get('timeUnit', [])
-	ssidName = d.get('ssidName', [])
-	timeUnit = str(timeUnit)
-	ssidName = str(ssidName)
+	timeUnit = d.get('timeUnit', [])[0]
+	ssid = d.get('ssid', [])[0]
 
 	timeout = int(timeout)
 
@@ -37,17 +35,19 @@ def application(environ, start_response):
 	else:
 		timeout = timeout
 
+	config = ConfigParser.ConfigParser()
+	config_path = environ['CONFIGURATION_FILE']
+
+	config.add_section('main')
+	config.set('main', 'timeout', timeout)
+	config.set('main', 'ssid', ssid)
+	config.add_section('display')
+	config.set('display', 'units', timeUnit)
+
 	try:
-		configFile = open(fileLocation, 'w')
-		configFile.write('Timeout=')
-		configFile.write(str(timeout))
-		configFile.write('\n')
-		configFile.write('TimeUnit=')
-		configFile.write(timeUnit)
-		configFile.write('\n')
-		configFile.write('SSIDName=')
-		configFile.write(ssidName)
-		configFile.close()
+		with open(config_path, 'wb') as config_file:
+			config.write(config_file)
+
 	except:
 		returnMessage = 'ERROR! Could not save to file!'
 		backGroundColor = '300000'
