@@ -3,8 +3,6 @@ import ConfigParser, os
 import qwifiutils
 
 def application(environ, start_response):
-	backGroundColor = '003000'
-	foreGroundColor = '008000'
 
 	config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
 
@@ -19,7 +17,7 @@ def application(environ, start_response):
 	formString += '" /></p><p>Time until timeout<input name="timeout" value="'
 	formString += str(timeout)
 	formString += '" /></p><p>Time is in:<br><input type="radio" name = "timeUnit" value = "seconds" checked>Seconds<br><input type = "radio" name = "timeUnit" value = "minutes">Minutes<br><input type = "radio" name = "timeUnit" value = "hours">Hours<br><input type = "radio" name = "timeUnit" value = "days">days</p><input type="submit" />'
-	response_body = html % (backGroundColor, foreGroundColor, foreGroundColor, foreGroundColor, formString)
+	response_body = html % (formString)
 
 	status = '200 OK'
 	response_headers = [('Content-Type', 'text/html'), ('Content-Length', str(len(response_body)))]
