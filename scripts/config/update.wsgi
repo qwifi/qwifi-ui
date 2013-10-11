@@ -5,8 +5,6 @@ def application(environ, start_response):
 	html = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read())
 
 	returnMessage = 'Changes Saved!'
-	backGroundColor = '003000'
-	foreGroundColor = '008000'
 
 	# the environment variable CONTENT_LENGTH may be empty or missing
 	try:
@@ -50,10 +48,9 @@ def application(environ, start_response):
 
 	except:
 		returnMessage = 'ERROR! Could not save to file!'
-		backGroundColor = '300000'
-		foreGroundColor = '800000'
 
-	response_body = html % (backGroundColor, foreGroundColor, foreGroundColor, foreGroundColor, returnMessage)
+
+	response_body = html % (returnMessage)
 
 	status = '200 OK'
 	response_headers = [('Content-Type', 'text/html'), ('Content-Length', str(len(response_body)))]
