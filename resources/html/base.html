@@ -2,20 +2,16 @@
   <head>
 
 <style> 
-
-body
-{
+body{
     background-color:#003000;
     margin:0px;
 }
 
-p
-{
+p{
     margin:0px;
 }
 
-.title
-{
+.title{
     color:#EBFFEB;
     font-size:35px;
     text-align:center;
@@ -25,51 +21,58 @@ p
     margin-left:auto;
     margin-right:auto;
     margin-bottom:0px;
+    padding-bottom:10px;
     
     background-color:#008000;
 
-    padding-bottom:10px;
     border-top-left-radius:10%% 50%%;
     border-top-right-radius:10%% 50%%;
 }
 
-.linkBar
-{
+.linkBar{
     color:#EBFFEB;
     text-align:center;
     
-    height:40px;
+    height:30px;
     width:700px;
-    margin-left:auto;
-    margin-right:auto;
-    background-color:#008000;
-
     padding-top:10px;
-    padding-bottom:10px;
-    border-top:2px solid black;
-}
-#link
-{
-    color:white;
-    padding:10px;
-    text-decoration:none;
-    border: 2px solid black;
-}
-#link:hover
-{
-  color: black;
-  background-color: DarkSlateGray;
-}
-
-.mainBody
-{
-    background-color:#008000;
     margin-left:auto;
     margin-right:auto;
+
+    background-color:#F2F2F2;
+
+    border-top:1px solid #ccc;
+    border-bottom:1px solid #ccc;
+}
+.linkBar a{
+    color:#069;
+
+    font-weight:bold;
+    text-decoration:none;
+
+    padding:8px 15px;
+    border-right:1px solid #ccc;
+}
+
+.linkBar a:hover{
+    color: #c00;
+    background-color:#fff;
+}
+#home{
+  border-left: 1px solid #ccc;
+}
+
+.mainBody{
+    font-size:20px;
+
+    margin-left:auto;
+    margin-right:auto;
+
     width:700px;
     height:700px;
+
     color:#EBFFEB;
-    font-size:20px;
+    background-color:#008000;
 }
 #text, li
 {
@@ -90,7 +93,9 @@ p
   </div>
 
   <div class="linkBar">
-    <a href="./update" id="link">Update Configuration</a>
+    <a href="/" id="home">Home</a>
+    <a href="/sessions/current">Active Sessions</a>
+    <a href="/auth/qr">Get a QR Code</a>
   </div>
 
   <div class="mainBody">
