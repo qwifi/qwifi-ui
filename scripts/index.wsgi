@@ -12,11 +12,11 @@ def application(environ, start_response):
 
 	html = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read())
 
-	formString = '<p>Administrative controls</p><form method="post" action="/config/update"><p>SSID Name<input name="ssid" value="'
+	formString = '<p id="adminCtrl">Administrative controls</p><form method="post" action="/config/update"><p id="ssid">SSID Name<input name="ssid" value="'
 	formString += ssid
-	formString += '" /></p><p>Time until timeout<input name="timeout" value="'
+	formString += '" /></p><p id="timeout">Time until timeout<input name="timeout" value="'
 	formString += str(timeout)
-	formString += '" /></p><p>Time is in:<br><input type="radio" name = "timeUnit" value = "seconds" checked>Seconds<br><input type = "radio" name = "timeUnit" value = "minutes">Minutes<br><input type = "radio" name = "timeUnit" value = "hours">Hours<br><input type = "radio" name = "timeUnit" value = "days">days</p><input type="submit" />'
+	formString += '" /></p><p id="timeUnits">Time is in:<br><input type="radio" name = "timeUnit" value = "seconds" checked>Seconds<br><input type = "radio" name = "timeUnit" value = "minutes">Minutes<br><input type = "radio" name = "timeUnit" value = "hours">Hours<br><input type = "radio" name = "timeUnit" value = "days">Days</p><input type="submit" />'
 	response_body = html % (formString)
 
 	status = '200 OK'
