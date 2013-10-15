@@ -13,7 +13,8 @@ def application(environ, start_response):
 	html = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read())#reads in the html code to be displayed
 
 	#next 5 lines create the content(forms) to be displayed on the webpage.
-	formString = '<p id="adminCtrl">Administrative controls</p><form method="post" action="/config/update"><p id="ssid">SSID Name<input name="ssid" value="'
+	formString = '<h1>Administrative controls</h1>'
+	formString += '<form method="post" action="/config/update"><p id="ssid">SSID Name<input name="ssid" value="'
 	formString += ssid
 	formString += '" /></p><p id="timeout">Time until timeout<input name="timeout" value="'
 	formString += str(timeout)
