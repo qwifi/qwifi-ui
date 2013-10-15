@@ -1,124 +1,108 @@
 <html>
-  <head>
+<head>
 
-<style> 
-body{
-    background-color:#003000;
-    margin:0px;
+<style>
+body {
+	background-color: #003000;
+	margin: 0px;
 }
 
-p{
-    margin:0px;
+p {
+	margin: 0px;
 }
 
-.title{
-    color:#EBFFEB;
-    font-size:35px;
-    text-align:center;
-
-    width:700px;
-    margin-top:0px;
-    margin-left:auto;
-    margin-right:auto;
-    margin-bottom:0px;
-    padding-bottom:10px;
-    
-    background-color:#008000;
-
-    border-top-left-radius:10%% 50%%;
-    border-top-right-radius:10%% 50%%;
+.title {
+	color: #EBFFEB;
+	font-size: 35px;
+	text-align: center;
+	width: 700px;
+	margin-top: 0px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 0px;
+	padding-bottom: 10px;
+	background-color: #008000;
+	border-top-left-radius: 10%% 50%%;
+	border-top-right-radius: 10%% 50%%;
 }
 
-.mainBody{
-    font-size:18px;
-
-    margin-left:auto;
-    margin-right:auto;
-
-    width:664px;
-    height:664px;
-
-    color:#EBFFEB;
-    background-color:#008000;
-    
-    padding: 18px;
+.mainBody {
+	font-size: 18px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 664px;
+	height: 664px;
+	color: #EBFFEB;
+	background-color: #008000;
+	padding: 18px;
 }
 
-.mainBody h1{
+.mainBody h1 {
 	margin-top: 0;
-    font-size: 25px;
-    font-weight: normal;
-    text-decoration: underline;
+	font-size: 25px;
+	font-weight: normal;
+	text-decoration: underline;
 }
 
-.linkBar{
-    color:#EBFFEB;
-    text-align:center;
-    
-    height:30px;
-    width:700px;
-    padding-top:10px;
-    margin-left:auto;
-    margin-right:auto;
-
-    background-color:#F2F2F2;
-
-    border-top:1px solid #ccc;
-    border-bottom:1px solid #ccc;
-}
-.linkBar a{
-    color:#069;
-
-    font-weight:bold;
-    text-decoration:none;
-
-    padding:8px 15px;
-    border-right:1px solid #ccc;
+.linkBar {
+	color: #EBFFEB;
+	text-align: center;
+	height: 30px;
+	width: 700px;
+	padding-top: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #F2F2F2;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
 }
 
-.linkBar a:hover{
-    color: #c00;
-    background-color:#fff;
-}
-#home{
-  border-left: 1px solid #ccc;
-}
-
-#ssid{
-  font-size:17px;
-
-  padding-top:12px;
-  padding-left:10px;
-}
-#timeout{
-  font-size:17px;
-
-  padding-top:12px;
-  padding-left:10px;
-}
-#timeUnits{
-  font-size:17px;
-
-  padding-top:12px;
-  padding-bottom:10px;
-  padding-left:10px;
+.linkBar a {
+	color: #069;
+	font-weight: bold;
+	text-decoration: none;
+	padding: 8px 15px;
+	border-right: 1px solid #ccc;
 }
 
-</style><!--end of style-->
+.linkBar a:hover {
+	color: #c00;
+	background-color: #fff;
+}
 
+#home {
+	border-left: 1px solid #ccc;
+}
+
+#ssid {
+	font-size: 17px;
+	padding-top: 12px;
+	padding-left: 10px;
+}
+
+#timeout {
+	font-size: 17px;
+	padding-top: 12px;
+	padding-left: 10px;
+}
+
+#timeUnits {
+	font-size: 17px;
+	padding-top: 12px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+}
+</style>
 
 </head>
-  <div class="title">
-    <p>Qwifi Administration</p>
-  </div>
+<div class="title">
+	<p>Qwifi Administration</p>
+</div>
 
-  <div class="linkBar">
-    <a href="/" id="home">Home</a>
-    <a href="/sessions/current">Active Sessions</a>
-    <a href="/auth/qr" target="_blank">Get a QR Code</a>
-  </div>
+<div class="linkBar">
+	<a href="/" id="home">Home</a> <a href="/sessions/current">Active
+		Sessions</a> <a href="/auth/qr" target="_blank">Get a QR Code</a>
+</div>
 
-  <div class="mainBody">
-    %s
-  </div>
+<div class="mainBody">%s</div>
 </html>
