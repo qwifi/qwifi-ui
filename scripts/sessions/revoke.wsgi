@@ -2,42 +2,52 @@ import MySQLdb
 from subprocess import call
 from cgi import parse_qs
 
+def validate_input(username, station_id):
+	if not username:
+		return '<p class="error">Invalid user argument</p>'
+
+	if not station_id:
+		return '<p class="error">Invalid id argument</p>'
+
+	return ''
+
 def application(environ, start_response):
 	status = '200 OK'
 	response_headers = [('Content-type', 'text/html')]
 
-	result = "Default result (this is a bug)"
+	result = '<p class="error">Default result (this is a bug)</p>'
 
 	query_dictionary = parse_qs(environ['QUERY_STRING'])
 
 	username = query_dictionary.get('user', [''])[0]
-	if (username == ''):
-		result = "Invalid user argument"
-		start_response(status, response_headers)
-		return result
 
 	station_id = query_dictionary.get('id', [''])[0]
-	if (station_id == ''):
-		result = "Invalid station id argument"
-		start_response(status, response_headers)
-		return result
 
-	try:
-		db = MySQLdb.connect("localhost", "radius", "radius", "radius")  # host, user, password, db
-		cursor = db.cursor()
+	result = validate_input(username, station_id)
 
-		query = "INSERT INTO radcheck (username, attribute, op, value) VALUES ('%s', 'Auth-Type', ':=', 'Reject');" % username
+	if not result:
+		try:
+			db = MySQLdb.connect("localhost", "radius", "radius", "radius")  # host, user, password, db
+			cursor = db.cursor()
 
-		cursor.execute(query)
-		db.commit()
-	except:
-		db.rollback()
-		status = '500 Internal Server Error'
-		result = "Failed to update database"
+			query = "INSERT INTO radcheck (username, attribute, op, value) VALUES ('%s', 'Auth-Type', ':=', 'Reject');" % username
 
-	hostapd_result = call(["/usr/sbin/hostapd_cli", "disassociate", station_id])
+			cursor.execute(query)
+			db.commit()
+		except:
+			db.rollback()
+			status = '500 Internal Server Error'
+			result = '<p class="success">Failed to update database</p>'
 
-	result = "Result for address " + station_id + ": " + str(hostapd_result)
+		hostapd_result = call(["/usr/sbin/hostapd_cli", "disassociate", station_id])
+
+		if hostapd_result is 0:
+			result = '<p class="success">Revocation of access for station id %s successful</p>' % station_id
+		else:
+			result = '<p class="error">Revocation of access for station id %s failed (code %s)</p>' % (station_id, str(hostapd_result))
 
 	start_response(status, response_headers)
+
+	result = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read()) % result
+
 	return result
