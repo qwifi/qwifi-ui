@@ -8,7 +8,7 @@ def generate_timeout_units(units):
 	result = '<option value="seconds">Seconds</option><option value="minutes">Minutes</option><option value="hours">Hours</option><option value="days">Days</option>'
 	
 	if units.lower() == 'minutes':
-		result = result.replace('value="minutes"', 'value="minutes" selected="selected"')
+		result = result.replace('value="minutes"', 'value="minutes" selected')
 	elif units.lower() == 'hours':
 		result = result.replace('value="hours"', 'value="hours" selected')
 	elif units.lower() == 'days':
