@@ -4,6 +4,7 @@ def application(environ, start_response):
 	status = '200 OK'
 
 	response_headers = [('Content-type', 'text/html')]
+	html = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read())#reads in the html code to be displayed
 	
 	try:
 		db = MySQLdb.connect("localhost","radius","radius","radius")#host, user, password, db
@@ -22,8 +23,9 @@ def application(environ, start_response):
 		else:
 			result += "None"
 		
+		html=html%(result)
 		start_response(status, response_headers)	
-		return result
+		return html
 
 	except:
 		print("Failed to query database")
