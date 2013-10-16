@@ -21,7 +21,6 @@ def application(environ, start_response):
 	config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])#Pulls in the configuration file.
 
 	timeout = config.getint('main', 'timeout')#reads in the data from the configuation file
-	ssid = config.get('main', 'ssid')
 	units = config.get('display', 'units')
 
 	html = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read())#reads in the html code to be displayed
@@ -29,8 +28,6 @@ def application(environ, start_response):
 	#next 5 lines create the content(forms) to be displayed on the webpage.
 	formString = '<h1>Administrative controls</h1>\n'
 	formString += '<form method="post" action="/config/update">\n'
-	#SSID
-	formString += '<div class="configItem">SSID Name<input name="ssid" value="%s" /></div>\n' % ssid
 	#timeout
 	formString += '<div class="configItem">Time until timeout<input name="timeout" value="%s" />\n' % str(timeout / time_unit_multipliers.get(units, 1))
 	formString += '<select name="timeUnit" autocomplete="off">%s</select>' % generate_timeout_units(units) #ref: http://stackoverflow.com/a/10096033/577298
