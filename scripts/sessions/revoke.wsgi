@@ -5,6 +5,8 @@ from cgi import parse_qs
 def application(environ, start_response):
 	status = '200 OK'
 	response_headers = [('Content-type', 'text/html')]
+	
+	html = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read())#reads in the html code to be displayed
 
 	result = "Default result (this is a bug)"
 
@@ -38,6 +40,8 @@ def application(environ, start_response):
 	hostapd_result = call(["/usr/sbin/hostapd_cli", "disassociate", station_id])
 
 	result = "Result for address " + station_id + ": " + str(hostapd_result)
+	
+	html=html%(result)
 
 	start_response(status, response_headers)
-	return result
+	return html
