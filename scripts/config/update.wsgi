@@ -18,9 +18,9 @@ def application(environ, start_response):
 	request_body = environ['wsgi.input'].read(request_body_size)
 	d = parse_qs(request_body)
 
-	timeout = d.get('timeout', [''])[0]  # Takes in the form input. All the form inputs
-	timeUnit = d.get('timeUnit', [])[0]
-	ssid = d.get('ssid', [])[0]
+	timeout = d.get('timeout', ['10'])[0]  # Takes in the form input. All the form inputs
+	timeUnit = d.get('timeUnit', ['seconds'])[0]
+	ssid = d.get('ssid', ['qwifi'])[0]
 
 	timeout = int(timeout)#converts timeout to integer for math operations. 
 
