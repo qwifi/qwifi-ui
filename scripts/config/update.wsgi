@@ -4,8 +4,6 @@ import ConfigParser, os
 def application(environ, start_response):
 	html = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read())  # reads in HTML
 
-	returnMessage = 'Changes Saved!'  # string that will be added to html
-
 	# the environment variable CONTENT_LENGTH may be empty or missing
 	try:
 		request_body_size = int(environ.get('CONTENT_LENGTH', 0))
@@ -32,6 +30,8 @@ def application(environ, start_response):
 	else:
 		timeout = timeout
 
+	result_message = '<p class="success">Changes saved.</p>'
+
 	config = ConfigParser.ConfigParser()
 	config_path = environ['CONFIGURATION_FILE']
 
@@ -40,15 +40,22 @@ def application(environ, start_response):
 	config.add_section('display')
 	config.set('display', 'units', timeUnit)
 
+	result_message = '<p class="error">Default message (this is a bug)</p>'
+	
 	try:  # tries to save to the config file
 		with open(config_path, 'wb') as config_file:
 			config.write(config_file)
 
-	except:
-		returnMessage = 'ERROR! Could not save to file!'  # changes the returned message if unable to save to the config file
+		result_message = '<table class="config">'
+		result_message += '<tr><td>%s</td><td>%s</td></tr>' % ('Timeout (in seconds):', timeout)
+		result_message += '<tr><td>%s</td><td>%s</td></tr>' % ('Time Units:', timeUnit)
+		result_message += '</table>'
+		result_message += '<p class="success">Changes saved.</p>'
 
+	except IOError:
+		result_message = '<p class="error">Could not save to file.</p>'  # changes the returned message if unable to save to the config file
 
-	response_body = html % (returnMessage)  # adds the content to the html
+	response_body = html % (result_message)
 
 	status = '200 OK'
 	response_headers = [('Content-Type', 'text/html'), ('Content-Length', str(len(response_body)))]
