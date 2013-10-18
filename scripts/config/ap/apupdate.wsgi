@@ -15,8 +15,7 @@ def application(environ, start_response):
 	# in the file like wsgi.input environment variable.
 	request_body = environ['wsgi.input'].read(request_body_size)
 	d = parse_qs(request_body)
-
-        ssid = d.get('ssid',['qwifi'])[0]
+        ssid = 'None'
         
 	result_message = '<p class="success">Changes saved.</p>'
 
