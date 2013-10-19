@@ -12,7 +12,7 @@ def application(environ, start_response):
 	#SSID
         
 	formString = '<div class="configItem">SSID Name<input name="ssid" value="%s" /></div>\n' % ssid
-	formString += '<form method="post" action="/config/ap/apupdate">\n'
+	formString += '<form method="post" action="/config/ap/update">\n'
 	formString += '<input type="submit" value="Apply" />'
 
         response_body = html % (formString)#adds the cmntent to the html
