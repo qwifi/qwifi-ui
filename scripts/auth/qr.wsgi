@@ -39,7 +39,7 @@ def application(environ, start_response):
 		db.rollback()
 		print("Error adding session timeout to database")
 
-	code = "WIFI:T:WPAEAP;S:qwifi;P:%(password)s;H:false;U:%(user)s;E:PEAP;N:MSCHAPV2;;" % {'user' : user, 'password' : password}
+	code = "WIFI:T:WPAEAP;S:qwifi;P:%(password)s;H:false;U:%(user)s;E:PEAP;N:MSCHAPV2;X:%(timeout)s;;" % {'user' : user, 'password' : password, 'timeout': timeout}
 
 	print(code)
 
