@@ -1,7 +1,26 @@
 from cgi import parse_qs, escape
 import ConfigParser, os
 
+def legal_ssid(test_ssid):
+        valid = True
+        #Check if it is a complete number
+        if test_ssid.isdigit():
+                valid = False
+        #Don't allow SSID to start with a digit
+        elif test_ssid[0].isdigit():
+                valid = False
+        #Test if SSID is a decimal number(isdigit wont catch it)
+        else:
+          try:
+                temp = float(test_ssid)
+          except:
+                valid = True
+
+        return valid
+
+
 def application(environ, start_response):
+
 	html = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read())  # reads in HTML
 
 	# the environment variable CONTENT_LENGTH may be empty or missing
@@ -15,15 +34,17 @@ def application(environ, start_response):
 	# in the file like wsgi.input environment variable.
 	request_body = environ['wsgi.input'].read(request_body_size)
 	d = parse_qs(request_body)
-        ssid = 'None'
         
-	result_message = '<p class="success">Changes saved.</p>'
+	ssid = d.get('ssid', [''])[0]  # Takes in the form input. All the form inputs
 
-	result_message = '<p class="error">Default message (this is a bug)</p>'
-	result_message = '<table class="config">'
-	result_message += '<tr><td>%s</td><td>%s</td></tr>' % ('SSID: ', ssid)
-	result_message += '</table>'
-	result_message += '<p class="success">Changes saved.</p>'
+        if not legal_ssid(ssid):
+                result_message = '<p> Error, the SSID given was not in the correct format </p>'
+        else:
+                result_message = '<p class="error">Default message (this is a bug)</p>'
+                result_message = '<table class="config">'
+                result_message += '<tr><td>%s</td><td>%s</td></tr>' % ('SSID: ', ssid)
+                result_message += '</table>'
+                result_message += '<p class="success">Changes saved.</p>'
 
 
 	response_body = html % (result_message)
