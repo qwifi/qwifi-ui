@@ -18,42 +18,47 @@ def application(environ, start_response):
 
 	timeout = d.get('timeout', ['10'])[0]  # Takes in the form input. All the form inputs
 	timeUnit = d.get('timeUnit', ['seconds'])[0]
+        
+        
+        if timeout.isdigit():
+	        timeout = int(timeout)  # converts timeout to integer for math operations.
 
-	timeout = int(timeout)  # converts timeout to integer for math operations.
+        	if timeUnit == 'minutes':  # if else statements determine what the selection for timeUnit was
+        		timeout = timeout * 60  # multiplies the timeout variable based on what the timeUnit was into seconds
+        	elif timeUnit == 'hours':
+        		timeout = timeout * 3600
+        	elif timeUnit == 'days':
+        		timeout = timeout * 86400
+        	else:
+	        	timeout = timeout
 
-	if timeUnit == 'minutes':  # if else statements determine what the selection for timeUnit was
-		timeout = timeout * 60  # multiplies the timeout variable based on what the timeUnit was into seconds
-	elif timeUnit == 'hours':
-		timeout = timeout * 3600
-	elif timeUnit == 'days':
-		timeout = timeout * 86400
-	else:
-		timeout = timeout
+	        result_message = '<p class="success">Changes saved.</p>'
 
-	result_message = '<p class="success">Changes saved.</p>'
+                config = ConfigParser.ConfigParser()
+                config_path = environ['CONFIGURATION_FILE']
 
-	config = ConfigParser.ConfigParser()
-	config_path = environ['CONFIGURATION_FILE']
+                config.add_section('main')
+                config.set('main', 'timeout', timeout)
+                config.add_section('display')
+                config.set('display', 'units', timeUnit)
 
-	config.add_section('main')
-	config.set('main', 'timeout', timeout)
-	config.add_section('display')
-	config.set('display', 'units', timeUnit)
+                result_message = '<p class="error">Default message (this is a bug)</p>'
+                
+                try:  # tries to save to the config file
+                        with open(config_path, 'wb') as config_file:
+                                config.write(config_file)
 
-	result_message = '<p class="error">Default message (this is a bug)</p>'
-	
-	try:  # tries to save to the config file
-		with open(config_path, 'wb') as config_file:
-			config.write(config_file)
+                        result_message = '<table class="config">'
+                        result_message += '<tr><td>%s</td><td>%s</td></tr>' % ('Timeout (in seconds):', timeout)
+                        result_message += '<tr><td>%s</td><td>%s</td></tr>' % ('Time Units:', timeUnit)
+                        result_message += '</table>'
+                        result_message += '<p class="success">Changes saved.</p>'
 
-		result_message = '<table class="config">'
-		result_message += '<tr><td>%s</td><td>%s</td></tr>' % ('Timeout (in seconds):', timeout)
-		result_message += '<tr><td>%s</td><td>%s</td></tr>' % ('Time Units:', timeUnit)
-		result_message += '</table>'
-		result_message += '<p class="success">Changes saved.</p>'
+                except IOError:
+                        result_message = '<p class="error">Could not save to file.</p>'  # changes the returned message if unable to save to the config file
 
-	except IOError:
-		result_message = '<p class="error">Could not save to file.</p>'  # changes the returned message if unable to save to the config file
+        else:
+                result_message = '<p> Error, the timeout specific was not the correct format</p>'
 
 	response_body = html % (result_message)
 
