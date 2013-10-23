@@ -9,12 +9,15 @@ def legal_ssid(test_ssid):
         #Don't allow SSID to start with a digit
         elif test_ssid[0].isdigit():
                 valid = False
+        #Test if SSID contains a space
+        elif ' ' in test_ssid:
+                valid = False
         #Test if SSID is a decimal number(isdigit wont catch it)
         else:
-          try:
-                temp = float(test_ssid)
-          except:
-                valid = True
+                try:
+                        temp = float(test_ssid)
+                except:
+                        valid = True
 
         return valid
 
