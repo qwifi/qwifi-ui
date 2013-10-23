@@ -49,7 +49,7 @@ def application(environ, start_response):
                 result_message += '<p class="success">Changes saved.</p>'
 
 
-	response_body = html % (result_message)
+	response_body = html % {'returnMessage':result_message}
 
 	status = '200 OK'
 	response_headers = [('Content-Type', 'text/html'), 
