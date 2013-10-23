@@ -33,7 +33,7 @@ def application(environ, start_response):
 	formString += '<select name="timeUnit" autocomplete="off">%s</select>' % generate_timeout_units(units) #ref: http://stackoverflow.com/a/10096033/577298
 	formString += '</div>\n'
 	formString += '<input type="submit" value="Apply" />'
-	response_body = html % (formString)#adds the content to the html
+	response_body = html % {'returnMessage':formString}#adds the content to the html
 
 	status = '200 OK'
 	response_headers = [('Content-Type', 'text/html'), ('Content-Length', str(len(response_body)))]
