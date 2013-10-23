@@ -41,8 +41,6 @@ def application(environ, start_response):
                 config.set('main', 'timeout', timeout)
                 config.set('display', 'units', timeUnit)
 
-                result_message = '<p class="error">Default message (this is a bug)</p>'
-                
                 try:  # tries to save to the config file
                         with open(config_path, 'wb') as config_file:
                                 config.write(config_file)
