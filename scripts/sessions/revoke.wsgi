@@ -1,6 +1,7 @@
 import MySQLdb
 from subprocess import call
 from cgi import parse_qs
+import qwifiutils
 
 def validate_input(username, station_id):
 	if not username:
@@ -27,7 +28,11 @@ def application(environ, start_response):
 
 	if not result:
 		try:
-			db = MySQLdb.connect("localhost", "radius", "radius", "radius")  # host, user, password, db
+			config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
+			db = MySQLdb.connect(config.get('database', 'server'),
+				config.get('database', 'username'),
+				config.get('database', 'password'),
+				config.get('database', 'database'))
 			cursor = db.cursor()
 
 			query = "INSERT INTO radcheck (username, attribute, op, value) VALUES ('%s', 'Auth-Type', ':=', 'Reject');" % username

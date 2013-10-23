@@ -1,5 +1,6 @@
 from cgi import parse_qs, escape
 import ConfigParser, os
+import qwifiutils
 
 def application(environ, start_response):
 	html = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read())  # reads in HTML
@@ -34,12 +35,10 @@ def application(environ, start_response):
 
 	        result_message = '<p class="success">Changes saved.</p>'
 
-                config = ConfigParser.ConfigParser()
                 config_path = environ['CONFIGURATION_FILE']
+                config = qwifiutils.get_config(config_path)
 
-                config.add_section('main')
                 config.set('main', 'timeout', timeout)
-                config.add_section('display')
                 config.set('display', 'units', timeUnit)
 
                 result_message = '<p class="error">Default message (this is a bug)</p>'

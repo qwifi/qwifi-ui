@@ -1,4 +1,5 @@
 import MySQLdb
+import qwifiutils
 
 def application(environ, start_response):
 	status = '200 OK'
@@ -8,7 +9,11 @@ def application(environ, start_response):
 	result = ''
 
 	try:
-		db = MySQLdb.connect("localhost", "radius", "radius", "radius")  # host, user, password, db
+		config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
+		db = MySQLdb.connect(config.get('database', 'server'),
+			config.get('database', 'username'),
+			config.get('database', 'password'),
+			config.get('database', 'database'))
 		cursor = db.cursor()
 		cursor.execute("SELECT radcheck.username, radacct.callingstationId FROM radcheck INNER JOIN radacct ON radcheck.username=radacct.username WHERE radacct.acctstoptime is NULL AND radcheck.attribute='Cleartext-Password';")
 

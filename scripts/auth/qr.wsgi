@@ -4,7 +4,11 @@ import MySQLdb
 import qwifiutils
 
 def application(environ, start_response):
-	db = MySQLdb.connect("localhost", "radius", "radius", "radius")  # host, user, password, db
+	config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
+	db = MySQLdb.connect(config.get('database', 'server'),
+		config.get('database', 'username'),
+		config.get('database', 'password'),
+		config.get('database', 'database'))
 	c = db.cursor()
 
 	pwsize = 10
