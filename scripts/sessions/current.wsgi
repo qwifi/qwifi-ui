@@ -34,7 +34,7 @@ def application(environ, start_response):
 		status = '500 Internal Server Error'
 		result = '<p class="error">Error querying database</a>'
 
-	result = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read()) % result
+	result = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read()) % {'returnMessage':result}
 	start_response(status, response_headers)
 
 	return result
