@@ -54,7 +54,7 @@ def application(environ, start_response):
             result_message = '<p class="error">Could not save to file.</p>'  # changes the returned message if unable to save to the config file
 
     else:
-        result_message = '<p> Error, the timeout specific was not the correct format</p>'
+        result_message = '<p class="error">Timeout given is not in the correct format</p>'
 
     response_body = html % (result_message)
 

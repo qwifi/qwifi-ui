@@ -39,7 +39,7 @@ def application(environ, start_response):
     ssid = d.get('ssid', [''])[0]  # Takes in the form input. All the form inputs
 
     if not legal_ssid(ssid):
-        result_message = '<p> Error, the SSID given was not in the correct format </p>'
+        result_message = '<p class="error">SSID given is not in the correct format</p>'
     else:
         result_message = '<table class="config">'
         result_message += '<tr><td>%s</td><td>%s</td></tr>' % ('SSID: ', ssid)
