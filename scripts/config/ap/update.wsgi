@@ -43,7 +43,6 @@ def application(environ, start_response):
         if not legal_ssid(ssid):
                 result_message = '<p> Error, the SSID given was not in the correct format </p>'
         else:
-                result_message = '<p class="error">Default message (this is a bug)</p>'
                 result_message = '<table class="config">'
                 result_message += '<tr><td>%s</td><td>%s</td></tr>' % ('SSID: ', ssid)
                 result_message += '</table>'
