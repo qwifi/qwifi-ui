@@ -53,6 +53,6 @@ def application(environ, start_response):
 
     start_response(status, response_headers)
 
-    result = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read()) % result
+    result = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read()) % {'returnMessage':result}
 
     return result

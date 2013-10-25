@@ -56,7 +56,7 @@ def application(environ, start_response):
     else:
         result_message = '<p> Error, the timeout specific was not the correct format</p>'
 
-    response_body = html % (result_message)
+    response_body = html % {'returnMessage':result_message}
 
     status = '200 OK'
     response_headers = [('Content-Type', 'text/html'), ('Content-Length', str(len(response_body)))]

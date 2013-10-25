@@ -12,7 +12,7 @@ def application(environ, start_response):
     formString += '<form method="post" action="/config/ap/update">\n'
     formString += '<input type="submit" value="Apply" />'
 
-    response_body = html % (formString)#adds the cmntent to the html
+    response_body = html % {'returnMessage':formString}#adds the cmntent to the html
     status = '200 OK'
     response_headers = [('Content-Type', 'text/html'), ('Content-Length', str(len(response_body)))]
     start_response(status, response_headers)
