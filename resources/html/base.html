@@ -112,9 +112,9 @@ input[type='submit'] {
 
 <script>
 
-//Confirms submission when changing the SSID
-$(".ssidForm").submit(function(){
-	var sendPage = confirm("Are you sure? This will cause all active connections to be dropped.");
+//Confirms submission when changing access point settings
+$(".apForm").submit(function(){
+	var sendPage = confirm("Updating access point settings will drop all active connections. Continue?");
 	return sendPage;
 });
 
