@@ -111,10 +111,28 @@ input[type='submit'] {
 <div class="mainBody">%(returnMessage)s</div>
 
 <script>
+
+//Confirms submission when changing the SSID
 $(".ssidForm").submit(function(){
 	var sendPage = confirm("Are you sure? This will cause all active connections to be dropped.");
 	return sendPage;
 });
+
+//Validates numbers. Needed for firefox user.
+$(".timeoutForm").submit(function(){
+	var value = $("input").val()
+	var sendPage = false;
+	var intRegex = /^\d+$/;
+	if(intRegex.test(value)) {
+		sendPage = true;
+	}
+	else {
+		alert('Please enter a number');
+		sendPage = false;
+	}
+	return sendPage;
+});
+
 </script>
 
 </html>
