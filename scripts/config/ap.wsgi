@@ -7,7 +7,7 @@ def application(environ, start_response):
     ssid = 'qwifi'
 
     #SSID
-    formString = '<form method="post" action="/config/ap/update">\n'
+    formString = '<form method="post" class="apForm" action="/config/ap/update">\n'
     formString += '<div class="configItem">SSID Name<input name="ssid" value="%s" pattern ="[A-Za-z]+[0-9]*" title="Must start with a letter. Can end with numbers." required /></div>\n' % ssid
     formString += '<input type="submit" value="Apply" />'
 
