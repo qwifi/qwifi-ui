@@ -3,13 +3,12 @@ import qwifiutils
 
 def application(environ, start_response):
     html = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read())#reads in HTML
-    config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])#Pulls in the configuration file.
 
-    ssid = config.get('main', 'ssid')
+    ssid = 'qwifi'
 
     #SSID
-    formString = '<div class="configItem">SSID Name<input name="ssid" value="%s" /></div>\n' % ssid
-    formString += '<form method="post" action="/config/ap/update">\n'
+    formString = '<form method="post" action="/config/ap/update">\n'
+    formString += '<div class="configItem">SSID Name<input name="ssid" value="%s" pattern ="[A-Za-z]+[0-9]*" title="Must start with a letter. Can end with numbers." required /></div>\n' % ssid
     formString += '<input type="submit" value="Apply" />'
 
     response_body = html % {'returnMessage':formString}#adds the cmntent to the html
