@@ -118,8 +118,8 @@ $(".apForm").submit(function(){
 	return sendPage;
 });
 
-//Validates numbers. Needed for firefox user.
-$(".timeoutForm").submit(function(){
+//Validates numbers, for browsers that don't support HTML5 input types
+$(".sessionsForm").submit(function(){
 	var value = $("input").val()
 	var sendPage = false;
 	var intRegex = /^\d+$/;
