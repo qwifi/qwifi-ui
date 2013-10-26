@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>Qwifi Administration</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
 <style>
 body {
@@ -108,4 +109,12 @@ input[type='submit'] {
 </div>
 
 <div class="mainBody">%(returnMessage)s</div>
+
+<script>
+$(".ssidForm").submit(function(){
+	var sendPage = confirm("Are you sure? This will cause all active connections to be dropped.");
+	return sendPage;
+});
+</script>
+
 </html>
