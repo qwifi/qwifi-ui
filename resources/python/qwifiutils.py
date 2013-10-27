@@ -1,4 +1,6 @@
-import ConfigParser, os
+import ConfigParser
+import os
+import re
 
 def get_config(config_path):
     config = ConfigParser.ConfigParser()
@@ -21,3 +23,21 @@ def get_config(config_path):
         # TODO: handle parsing exceptions
 
     return config
+
+def get_ssid(hostapd_conf_path):
+    if not hostapd_conf_path:
+        hostapd_conf_path = '/etc/hostapd.conf'
+
+    ssid = 'qwifi'
+
+    try:
+        with open(hostapd_conf_path) as infile:
+            for line in infile:
+                #TODO: make this match less naive: hostapd.conf printf-escaped strings as SSIDs
+                match = re.match('^\s?ssid=(".+"|[^"].+)\s', line)
+                if match:
+                    ssid = match.group(1)
+    except IOError as error:
+        print error
+
+    return ssid

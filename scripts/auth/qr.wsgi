@@ -43,7 +43,8 @@ def application(environ, start_response):
         db.rollback()
         print("Error adding session timeout to database")
 
-    code = "WIFI:T:WPAEAP;S:qwifi;P:%(password)s;H:false;U:%(user)s;E:PEAP;N:MSCHAPV2;X:%(timeout)s;;" % {'user' : user, 'password' : password, 'timeout': timeout}
+    ssid = qwifiutils.get_ssid(environ['HOSTAPD_CONF'])
+    code = "WIFI:T:WPAEAP;S:%(ssid)s;P:%(password)s;H:false;U:%(user)s;E:PEAP;N:MSCHAPV2;X:%(timeout)s;;" % {'ssid': ssid, 'user' : user, 'password' : password, 'timeout': timeout}
 
     print(code)
 
