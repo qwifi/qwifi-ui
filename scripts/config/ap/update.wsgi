@@ -4,6 +4,7 @@ import os
 import re
 import shutil
 import subprocess
+import qwifiutils
 
 def legal_ssid(test_ssid):
     valid = True
@@ -42,11 +43,28 @@ def application(environ, start_response):
 
     ssid = d.get('ssid', [''])[0]  # Takes in the form input. All the form inputs
 
+    session_mode = d.get('session_mode', [''])[0]
+
     status = '200 OK'
     result_message = '<p class="error">Default message (this is a bug)'
 
+    config_path = environ['CONFIGURATION_FILE']
+    config = qwifiutils.get_config(config_path)
+
+    if not (session_mode == 'device' or session_mode == 'ap'):
+        result_message = '<p class="error">Invalid session mode: %s</p>' % session_mode
+        response_body = html % {'returnMessage':result_message}
+        response_headers = [('Content-Type', 'text/html'), ('Content-Length', str(len(response_body)))]
+        start_response(status, response_headers)
+        return response_body  # sends the html to the user's web browser.
+    else:
+        config.set('session', 'mode', session_mode)
+
+    with open(config_path, 'wb') as config_file:
+        config.write(config_file)
+
     if not legal_ssid(ssid):
-        result_message = '<p class="error">SSID given is not in the correct format</p>'
+        result_message = '<p class="error">SSID given is not in the correct format.</p>'
     else:
         hostapd_conf_path = environ['HOSTAPD_CONF']
         temp_path = '/tmp/hostapd.conf'
@@ -75,6 +93,7 @@ def application(environ, start_response):
             else:
                 result_message = '<table class="config">'
                 result_message += '<tr><td>SSID:</td><td>%s</td></tr>' % ssid
+                result_message += '<tr><td>Session Mode:</td><td>%s</td></tr>' % session_mode
                 result_message += '</table>'
                 result_message += '<p class="success">Changes saved.</p>'
 

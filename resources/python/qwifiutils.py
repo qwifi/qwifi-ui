@@ -18,6 +18,9 @@ def get_config(config_path):
     config.add_section('logging')
     config.set('logging', 'level', 'debug')
 
+    config.add_section('session')
+    config.set('session', 'mode', 'device')
+
     if (os.path.isfile(config_path)):
         config.read(config_path)
         # TODO: handle parsing exceptions
