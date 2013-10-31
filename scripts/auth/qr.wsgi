@@ -11,40 +11,39 @@ def application(environ, start_response):
         config.get('database', 'database'))
     c = db.cursor()
 
-    pwsize = 10
-    user = ''.join(random.sample(string.ascii_lowercase, pwsize))
-    password = ''.join(random.sample(string.ascii_lowercase, pwsize))
-
-    query = "INSERT INTO radcheck SET username='%(username)s',attribute='Cleartext-Password',op=':=',value='%(password)s';" % { 'username' : user, 'password' : password }
-
-    try:
-        # Execute the sql command
-        c.execute(query)
-        # commit the changes to the database
-        db.commit()
-    except:
-        # Something bad happened rollback the changes
-        db.rollback()
-        print("Error adding credentials to database")
-
     config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
 
     timeout = config.getint('main', 'timeout')
 
-    query = "INSERT INTO radcheck SET username='%(username)s',attribute='Session-Timeout',op=':=',value='%(timeout)s';" % { 'username' : user, 'timeout' : timeout }
+    pwsize = 10
+    username = 'qwifi' + ''.join(random.sample(string.ascii_lowercase, pwsize))
+    password = ''.join(random.sample(string.ascii_lowercase, pwsize))
+
+    print 'Session mode: ' + config.get('session', 'mode')
 
     try:
-        # Execute the sql command
+        query = "SELECT username,value FROM radcheck where username LIKE 'qwifi%'"
         c.execute(query)
-        # commit the changes to the database
-        db.commit()
-    except:
-        # Something bad happened rollback the changes
+        result = c.fetchall()
+        if config.get('session', 'mode') == 'ap' and len(result) > 0:
+            username = result[0][0]
+            password = result[0][1]
+            print 'Using existing code: %s %s' %(username, password)
+        else:
+            # use randomly generated password
+            query = "INSERT INTO radcheck SET username='%(username)s',attribute='Cleartext-Password',op=':=',value='%(password)s';" % { 'username' : username, 'password' : password }
+            c.execute(query)
+
+            query = "INSERT INTO radcheck SET username='%(username)s',attribute='Session-Timeout',op=':=',value='%(timeout)s';" % { 'username' : username, 'timeout' : timeout }
+            c.execute(query)
+            db.commit()
+    except MySQLdb.Error, e:
         db.rollback()
-        print("Error adding session timeout to database")
+        print("Database error: %s" % e)
+        raise
 
     ssid = qwifiutils.get_ssid(environ['HOSTAPD_CONF'])
-    code = "WIFI:T:WPAEAP;S:%(ssid)s;P:%(password)s;H:false;U:%(user)s;E:PEAP;N:MSCHAPV2;X:%(timeout)s;;" % {'ssid': ssid, 'user' : user, 'password' : password, 'timeout': timeout}
+    code = "WIFI:T:WPAEAP;S:%(ssid)s;P:%(password)s;H:false;U:%(username)s;E:PEAP;N:MSCHAPV2;X:%(timeout)s;;" % {'ssid': ssid, 'username' : username, 'password' : password, 'timeout': timeout}
 
     print(code)
 
