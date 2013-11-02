@@ -28,7 +28,12 @@ def application(environ, start_response):
         if config.get('session', 'mode') == 'ap' and len(result) > 0:
             username = result[0][0]
             password = result[0][1]
+            query = "SELECT * FROM radcheck WHERE attribute='Vendor-Specific'"
+            result = c.execute(query)
+            if len(result) == 0:
+               query = "INSERT INTO radcheck SET username='%(username)s',attribute='Vendor-Specific',op=':=',value='%(timeout)s';" % { 'username' : username, 'timeout' : timeout }
             print 'Using existing code: %s %s' %(username, password)
+            db.commit()
         else:
             # use randomly generated password
             query = "INSERT INTO radcheck SET username='%(username)s',attribute='Cleartext-Password',op=':=',value='%(password)s';" % { 'username' : username, 'password' : password }
