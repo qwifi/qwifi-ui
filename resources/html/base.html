@@ -128,14 +128,14 @@ $(".apForm").submit(function(){
 
 //Validates numbers, for browsers that don't support HTML5 input types
 $(".sessionsForm").submit(function(){
-	var value = $("input").val()
+	var value = $("#timeout").val()
 	var sendPage = false;
 	var intRegex = /^\d+$/;
 	if(intRegex.test(value)) {
 		sendPage = true;
 	}
 	else {
-		alert('Please enter a number');
+		alert('Please enter a number.');
 		sendPage = false;
 	}
 	return sendPage;

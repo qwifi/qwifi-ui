@@ -29,7 +29,7 @@ def application(environ, start_response):
     formString = '<h1>Administrative controls</h1>\n'
     formString += '<form class="sessionsForm" method="post" action="/config/update">\n'
     #timeout
-    formString += '<div class="configItem">Session timeout: <input type="number" name="timeout" value="%s" required />\n' % str(timeout / time_unit_multipliers.get(units, 1))
+    formString += '<div class="configItem">Session timeout: <input id="timeout" type="number" name="timeout" value="%s" required />\n' % str(timeout / time_unit_multipliers.get(units, 1))
     formString += '<select name="timeUnit" autocomplete="off">%s</select>' % generate_timeout_units(units) #ref: http://stackoverflow.com/a/10096033/577298
     formString += '</div>\n'
     formString += '<input type="submit" value="Apply" />'
