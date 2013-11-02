@@ -31,7 +31,7 @@ def application(environ, start_response):
             query = "SELECT * FROM radcheck WHERE attribute='Vendor-Specific'"
             result = c.execute(query)
             if len(result) == 0:
-               query = "INSERT INTO radcheck SET username='%(username)s',attribute='Vendor-Specific',op=':=',value='%(timeout)s';" % { 'username' : username, 'timeout' : timeout }
+               query = "INSERT INTO radcheck SET username='%(username)s',attribute='Vendor-Specific',op=':=',value='NOW() + %(timeout)s';" % { 'username' : username, 'timeout' : timeout }
             print 'Using existing code: %s %s' %(username, password)
             db.commit()
         else:
