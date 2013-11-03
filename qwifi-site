@@ -23,7 +23,8 @@
 	</Directory>
 
 	Alias /config/current /var/www/config/current
-	WSGIScriptAliasMatch ^/(.*)\.css$ /usr/local/wsgi/resources/css/$1
+	Alias /resources/ /usr/local/wsgi/resources/
+
 	WSGIScriptAliasMatch ^/(.*)/$ /usr/local/wsgi/scripts/$1/index.wsgi
 	WSGIScriptAliasMatch ^/(.+) /usr/local/wsgi/scripts/$1.wsgi
 	WSGIScriptAliasMatch / /usr/local/wsgi/scripts/index.wsgi
