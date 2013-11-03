@@ -26,7 +26,7 @@ def application(environ, start_response):
     html = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read())#reads in the html code to be displayed
 
     #next 5 lines create the content(forms) to be displayed on the webpage.
-    formString = '<h1>Administrative controls</h1>\n'
+    formString = '<h1>Administrative Controls</h1>\n'
     formString += '<form class="sessionsForm" method="post" action="/config/update">\n'
     #timeout
     formString += '<div class="configItem">Session timeout: <input id="timeout" type="number" name="timeout" value="%s" required />\n' % str(timeout / time_unit_multipliers.get(units, 1))
