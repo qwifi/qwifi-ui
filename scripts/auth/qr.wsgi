@@ -13,7 +13,7 @@ def application(environ, start_response):
 
     config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
 
-    timeout = config.getint('main', 'timeout')
+    timeout = config.getint('session', 'timeout')
 
     pwsize = 10
     username = 'qwifi' + ''.join(random.sample(string.ascii_lowercase, pwsize))

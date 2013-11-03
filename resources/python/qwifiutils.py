@@ -5,8 +5,6 @@ import re
 def get_config(config_path):
     config = ConfigParser.ConfigParser()
 
-    config.add_section('main')
-    config.set('main', 'timeout', '10')
     config.add_section('display')
     config.set('display', 'units', 'seconds')
 
@@ -19,6 +17,7 @@ def get_config(config_path):
     config.set('logging', 'level', 'debug')
 
     config.add_section('session')
+    config.set('session', 'timeout', '10')
     config.set('session', 'mode', 'device')
 
     if (os.path.isfile(config_path)):

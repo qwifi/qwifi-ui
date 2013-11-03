@@ -37,7 +37,7 @@ def application(environ, start_response):
         config_path = environ['CONFIGURATION_FILE']
         config = qwifiutils.get_config(config_path)
 
-        config.set('main', 'timeout', timeout)
+        config.set('session', 'timeout', timeout)
         config.set('display', 'units', timeUnit)
 
         try:  # tries to save to the config file

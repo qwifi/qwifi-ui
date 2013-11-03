@@ -20,7 +20,7 @@ def generate_timeout_units(units):
 def application(environ, start_response):
     config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])#Pulls in the configuration file.
 
-    timeout = config.getint('main', 'timeout')#reads in the data from the configuation file
+    timeout = config.getint('session', 'timeout')#reads in the data from the configuation file
     units = config.get('display', 'units')
 
     html = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read())#reads in the html code to be displayed
