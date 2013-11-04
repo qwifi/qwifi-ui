@@ -25,20 +25,24 @@ def application(environ, start_response):
         query = "SELECT username,value FROM radcheck where username LIKE 'qwifi%'"
         c.execute(query)
         result = c.fetchall()
-        if config.get('session', 'mode') == 'ap' and len(result) > 0:
-            username = result[0][0]
-            password = result[0][1]
-            query = "SELECT * FROM radcheck WHERE attribute='Vendor-Specific'"
-            result = c.execute(query)
-            if len(result) == 0:
-               query = "INSERT INTO radcheck SET username='%(username)s',attribute='Vendor-Specific',op=':=',value='NOW() + %(timeout)s';" % { 'username' : username, 'timeout' : timeout }
-            print 'Using existing code: %s %s' %(username, password)
-            db.commit()
+        if config.get('session', 'mode') == 'ap':
+            if len(result) > 0:
+                username = result[0][0]
+                password = result[0][1]
+                query = "SELECT * FROM radcheck WHERE attribute='Vendor-Specific'"
+                result = c.execute(query)
+                #TODO: use result of previous query to generate QR code
+                print 'Using existing code: %s %s' %(username, password)
+            else:
+                query = "INSERT INTO radcheck SET username='%(username)s',attribute='Cleartext-Password',op=':=',value='%(password)s';" % { 'username' : username, 'password' : password }
+                c.execute(query)
+                query = "INSERT INTO radcheck SET username='%(username)s',attribute='Vendor-Specific',op=':=',value='NOW() + %(timeout)s';" % { 'username' : username, 'timeout' : timeout }
+                c.execute(query)
+                db.commit()
         else:
             # use randomly generated password
             query = "INSERT INTO radcheck SET username='%(username)s',attribute='Cleartext-Password',op=':=',value='%(password)s';" % { 'username' : username, 'password' : password }
             c.execute(query)
-
             query = "INSERT INTO radcheck SET username='%(username)s',attribute='Session-Timeout',op=':=',value='%(timeout)s';" % { 'username' : username, 'timeout' : timeout }
             c.execute(query)
             db.commit()
@@ -47,6 +51,7 @@ def application(environ, start_response):
         print("Database error: %s" % e)
         raise
 
+    #TODO: properly generate codes for AP mode
     ssid = qwifiutils.get_ssid(environ['HOSTAPD_CONF'])
     code = "WIFI:T:WPAEAP;S:%(ssid)s;P:%(password)s;H:false;U:%(username)s;E:PEAP;N:MSCHAPV2;X:%(timeout)s;;" % {'ssid': ssid, 'username' : username, 'password' : password, 'timeout': timeout}
 
