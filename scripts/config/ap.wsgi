@@ -13,9 +13,9 @@ def application(environ, start_response):
     formString += '<div class="configItem">SSID Name<input name="ssid" value="%s" pattern ="[A-Za-z]+[0-9]*" title="Must start with a letter. Can end with numbers." required /></div>\n' % ssid
 
     formString += '<h2>RADIUS Server</h2>'
-    formString += '<div class="configItem">IP Address<input name="ip_address" value="%s" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" required /></div>\n' % ip_address
-    formString += '<div class="configItem">Default Gateway<input name="default_gateway" value="%s" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" required/></div>\n' % default_gateway
-    formString += '<div class="configItem">Subnet Mask<input name="subnet_mask" value="%s" pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" /></div>\n' % subnet_mask
+    formString += '<div class="configItem">IP Address<input id="ipAddress" name="ip_address" value="%s" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" title="(e.x. 192.168.10.2)" required /></div>\n' % ip_address
+    formString += '<div class="configItem">Default Gateway<input id="defGateway" name="default_gateway" value="%s" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" title=" (e.x. 192.168.10.5)" required/></div>\n' % default_gateway
+    formString += '<div class="configItem">Subnet Mask<input id="subnetMask" name="subnet_mask" value="%s" pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" title="(e.x. 255.255.255.1)" required/></div>\n' % subnet_mask
 
     formString += '<h2>Session Mode</h2>'
     config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
