@@ -26,10 +26,11 @@ def application(environ, start_response):
         formString += '<div class="configItem"><input name="session_mode" value="ap" type="radio" />Access Point</div>'
 
     formString += '<h2>RADIUS Server</h2>'
-    formString += '<div class="configItem">IP Address<input disabled name="ip_address" value="%s" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" required /></div>\n' % ip_address
-    formString += '<div class="configItem">Default Gateway<input disabled name="default_gateway" value="%s" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" required/></div>\n' % default_gateway
-    formString += '<div class="configItem">Subnet Mask<input disabled name="subnet_mask" value="%s" pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" /></div>\n' % subnet_mask
+    formString += '<div class="configItem">IP Address<input id="ipAddress" name="ip_address" value="%s" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" title="(e.x. 192.168.10.2)" required /></div>\n' % ip_address
+    formString += '<div class="configItem">Default Gateway<input id="defGateway" name="default_gateway" value="%s" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" title=" (e.x. 192.168.10.5)" required/></div>\n' % default_gateway
+    formString += '<div class="configItem">Subnet Mask<input id="subnetMask" name="subnet_mask" value="%s" pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" title="(e.x. 255.255.255.1)" required/></div>\n' % subnet_mask
 
+ 
     formString += '<input type="submit" value="Apply" />'
 
     html = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read())  # reads in HTML
