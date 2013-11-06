@@ -30,7 +30,6 @@ def application(environ, start_response):
     formString += '<div class="configItem">Default Gateway<input disabled id="defGateway" name="default_gateway" value="%s" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" title=" (e.x. 192.168.10.5)" required/></div>\n' % default_gateway
     formString += '<div class="configItem">Subnet Mask<input disabled id="subnetMask" name="subnet_mask" value="%s" pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" title="(e.x. 255.255.255.1)" required/></div>\n' % subnet_mask
 
- 
     formString += '<input type="submit" value="Apply" />'
 
     html = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read())  # reads in HTML
