@@ -6,6 +6,8 @@ import shutil
 import subprocess
 import qwifiutils
 import MySQLdb
+import random
+import string
 
 def legal_ssid(test_ssid):
     valid = True
@@ -62,7 +64,7 @@ def application(environ, start_response):
         if config.get('session', 'mode') != session_mode:
             try:
                 print 'Session mode changed, culling database'
-                #remove all access codes if we're switching session modes
+                # remove all access codes if we're switching session modes
                 db = MySQLdb.connect(config.get('database', 'server'),
                     config.get('database', 'username'),
                     config.get('database', 'password'),
@@ -71,8 +73,9 @@ def application(environ, start_response):
                 query = "DELETE FROM radcheck where username LIKE 'qwifi%';"
                 c.execute(query)
                 db.commit()
-            except MySQLdb.Error:
-                    result_message = '<p class="error">Error updating database, see log for details.</p>' % session_mode
+            except MySQLdb.Error, e:
+                    print e
+                    result_message = '<p class="error">Error updating database, see log for details.</p>'
                     response_body = html % {'returnMessage':result_message}
                     response_headers = [('Content-Type', 'text/html'), ('Content-Length', str(len(response_body)))]
                     start_response(status, response_headers)
