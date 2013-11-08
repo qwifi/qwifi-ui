@@ -8,8 +8,8 @@ import random
 FILE_SIZE = 50
 
 #open the two resource files
-noun1_file = open('noun1.txt', 'r')
-verb1_file = open('verb1.txt', 'r')
+noun1_file = open('noun.txt', 'r')
+verb1_file = open('verb.txt', 'r')
 
 #def generate a random number to specified, helper for gen_user_pass()
 def generate_random_number(resolution):
