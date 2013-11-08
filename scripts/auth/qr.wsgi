@@ -34,11 +34,7 @@ def application(environ, start_response):
                 #TODO: use result of previous query to generate QR code
                 print 'Using existing code: %s %s' %(username, password)
             else:
-                query = "INSERT INTO radcheck SET username='%(username)s',attribute='Cleartext-Password',op=':=',value='%(password)s';" % { 'username' : username, 'password' : password }
-                c.execute(query)
-                query = "INSERT INTO radcheck SET username='%(username)s',attribute='Vendor-Specific',op=':=',value='NOW() + %(timeout)s';" % { 'username' : username, 'timeout' : timeout }
-                c.execute(query)
-                db.commit()
+                print "Couldn't find access code for ap mode. A new random code has been generated."
         else:
             # use randomly generated password
             query = "INSERT INTO radcheck SET username='%(username)s',attribute='Cleartext-Password',op=':=',value='%(password)s';" % { 'username' : username, 'password' : password }
