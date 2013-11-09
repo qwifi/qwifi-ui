@@ -21,6 +21,9 @@ def application(environ, start_response):
 
     print 'Session mode: ' + config.get('session', 'mode')
 
+    code = ''
+    ssid = qwifiutils.get_ssid(environ['HOSTAPD_CONF'])
+
     try:
         query = "SELECT username,value FROM radcheck where username LIKE 'qwifi%'"
         c.execute(query)
@@ -29,12 +32,21 @@ def application(environ, start_response):
             if len(result) > 0:
                 username = result[0][0]
                 password = result[0][1]
-                query = "SELECT * FROM radcheck WHERE attribute='Vendor-Specific'"
-                result = c.execute(query)
-                #TODO: use result of previous query to generate QR code
                 print 'Using existing code: %s %s' %(username, password)
             else:
                 print "Couldn't find access code for ap mode. A new random code has been generated."
+            
+                query = "INSERT INTO radcheck SET username='%(username)s',attribute='Cleartext-Password',op=':=',value='%(password)s';" % { 'username' : username, 'password' : password }
+                c.execute(query)
+                query = "INSERT INTO radcheck (username,attribute,op,value) VALUES ('%(username)s', 'Vendor-Specific', ':=', DATE_FORMAT(UTC_TIMESTAMP() + INTERVAL %(timeout)s SECOND, '%%Y-%%m-%%d %%H:%%i:%%s'));" % { 'username' : username, 'timeout' : config.get('session', 'timeout') }
+                c.execute(query)
+                db.commit()
+
+            query = "SELECT value FROM radcheck WHERE attribute='Vendor-Specific'"
+            c.execute(query)
+            result = c.fetchall()
+
+            code = "WIFI:T:WPAEAP;S:%(ssid)s;P:%(password)s;H:false;U:%(username)s;E:PEAP;N:MSCHAPV2;X:%(endtime)s;;" % {'ssid': ssid, 'username' : username, 'password' : password, 'endtime': result[0][0]}
         else:
             # use randomly generated password
             query = "INSERT INTO radcheck SET username='%(username)s',attribute='Cleartext-Password',op=':=',value='%(password)s';" % { 'username' : username, 'password' : password }
@@ -42,14 +54,12 @@ def application(environ, start_response):
             query = "INSERT INTO radcheck SET username='%(username)s',attribute='Session-Timeout',op=':=',value='%(timeout)s';" % { 'username' : username, 'timeout' : timeout }
             c.execute(query)
             db.commit()
+            code = "WIFI:T:WPAEAP;S:%(ssid)s;P:%(password)s;H:false;U:%(username)s;E:PEAP;N:MSCHAPV2;X:%(timeout)s;;" % {'ssid': ssid, 'username' : username, 'password' : password, 'timeout': timeout}
+
     except MySQLdb.Error, e:
         db.rollback()
         print("Database error: %s" % e)
         raise
-
-    #TODO: properly generate codes for AP mode
-    ssid = qwifiutils.get_ssid(environ['HOSTAPD_CONF'])
-    code = "WIFI:T:WPAEAP;S:%(ssid)s;P:%(password)s;H:false;U:%(username)s;E:PEAP;N:MSCHAPV2;X:%(timeout)s;;" % {'ssid': ssid, 'username' : username, 'password' : password, 'timeout': timeout}
 
     print(code)
 
