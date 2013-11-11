@@ -6,8 +6,6 @@ import shutil
 import subprocess
 import qwifiutils
 import MySQLdb
-import random
-import string
 
 def legal_ssid(test_ssid):
     valid = True

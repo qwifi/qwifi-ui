@@ -1,12 +1,11 @@
 from qrencode import Encoder
-import string, random
 import MySQLdb
 import qwifiutils
 import pwgen
 
 def application(environ, start_response):
 
-    #reads in the html code to be displayed
+    # reads in the html code to be displayed
     html = (open(environ['RESOURCE_BASE'] + '/html/qr.html', 'r').read())
 
     config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
@@ -23,16 +22,16 @@ def application(environ, start_response):
 	connection = False
 
     if connection:
-        #We've succesfully connected to the database
+        # We've succesfully connected to the database
         config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
 
         timeout = config.getint('session', 'timeout')
-        timeout_units = config.get('display', 'units') 
+        timeout_units = config.get('display', 'units')
 
         # converts timeout from seconds to value stored in timeout_units
         # user might not like seeing that their session time is '432,000 seconds'
-        if timeout_units == 'minutes':  
-            timeout = timeout / 60  
+        if timeout_units == 'minutes':
+            timeout = timeout / 60
         elif timeout_units == 'hours':
             timeout = timeout / 3600
         elif timeout_units == 'days':
@@ -40,17 +39,16 @@ def application(environ, start_response):
         else:
             timeout = timeout
 
-        #pwsize = 10
-        #username = 'qwifi' + ''.join(random.sample(string.ascii_lowercase, pwsize))
-        #password = ''.join(random.sample(string.ascii_lowercase, pwsize))
         pw_dict = pwgen.gen_user_pass()
-        username = pw_dict['username']
+        username = 'qwifi' + pw_dict['username']
         password = pw_dict['password']
 
         print 'Session mode: ' + config.get('session', 'mode')
 
         code = ''
         ssid = qwifiutils.get_ssid(environ['HOSTAPD_CONF'])
+
+        end = ''
 
         try:
             query = "SELECT username,value FROM radcheck where username LIKE 'qwifi%'"
@@ -60,10 +58,10 @@ def application(environ, start_response):
                 if len(result) > 0:
                     username = result[0][0]
                     password = result[0][1]
-                    print 'Using existing code: %s %s' %(username, password)
+                    print 'Using existing code: %s %s' % (username, password)
                 else:
                     print "Couldn't find access code for ap mode. A new random code has been generated."
-            
+
                     query = "INSERT INTO radcheck SET username='%(username)s',attribute='Cleartext-Password',op=':=',value='%(password)s';" % { 'username' : username, 'password' : password }
                     c.execute(query)
                     query = "INSERT INTO radcheck (username,attribute,op,value) VALUES ('%(username)s', 'Vendor-Specific', ':=', DATE_FORMAT(UTC_TIMESTAMP() + INTERVAL %(timeout)s SECOND, '%%Y-%%m-%%d %%H:%%i:%%s'));" % { 'username' : username, 'timeout' : config.get('session', 'timeout') }
@@ -73,8 +71,9 @@ def application(environ, start_response):
                 query = "SELECT value FROM radcheck WHERE attribute='Vendor-Specific'"
                 c.execute(query)
                 result = c.fetchall()
+                end = result[0][0];
 
-                code = "WIFI:T:WPAEAP;S:%(ssid)s;P:%(password)s;H:false;U:%(username)s;E:PEAP;N:MSCHAPV2;X:%(endtime)s;;" % {'ssid': ssid, 'username' : username, 'password' : password, 'endtime': result[0][0]}
+                code = "WIFI:T:WPAEAP;S:%(ssid)s;P:%(password)s;H:false;U:%(username)s;E:PEAP;N:MSCHAPV2;X:%(end)s;;" % {'ssid': ssid, 'username' : username, 'password' : password, 'end': end}
             else:
                 # use randomly generated password
                 query = "INSERT INTO radcheck SET username='%(username)s',attribute='Cleartext-Password',op=':=',value='%(password)s';" % { 'username' : username, 'password' : password }
@@ -96,17 +95,20 @@ def application(environ, start_response):
         im.save("/var/www/codes/qr.png")
         status = '200 OK'
 
-        formString = '<img src="/codes/qr.png"/>'
-        formString += '<p>Username: %s</p>'   % username
-        formString += '<p>Password: %s</p>'   % password
-        formString += '<p>Session Length: %s' % timeout
-        formString += ' %s</p>' % timeout_units
+        form_string = '<img src="/codes/qr.png"/>'
+        form_string += '<p>Username: %s</p>' % username
+        form_string += '<p>Password: %s</p>' % password
+        if config.get('session', 'mode') == 'ap':
+            form_string += '<p>Session End: %s' % end
+        else:
+            form_string += '<p>Session Length: %s' % timeout
+            form_string += ' %s</p>' % timeout_units
     else:
-        formString = '<p>Could not connect to the Database</p>'
+        form_string = '<p>Could not connect to the Database</p>'
 
 
-    #adds the content to the html
-    response_body = html % {'returnMessage':formString}
+    # adds the content to the html
+    response_body = html % {'returnMessage':form_string}
     response_headers = [('Content-Type', 'text/html'), ('Content-Length', str(len(response_body)))]
 
     start_response(status, response_headers)
