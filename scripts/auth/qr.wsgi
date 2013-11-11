@@ -2,22 +2,32 @@ from qrencode import Encoder
 import string, random
 import MySQLdb
 import qwifiutils
+import pwgen
 
 def application(environ, start_response):
     config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
-    db = MySQLdb.connect(config.get('database', 'server'),
-        config.get('database', 'username'),
-        config.get('database', 'password'),
-        config.get('database', 'database'))
-    c = db.cursor()
+    try:
+        db = MySQLdb.connect(config.get('database', 'server'),
+            config.get('database', 'username'),
+            config.get('database', 'password'),
+            config.get('database', 'database'))
+        c = db.cursor()
+    except:
+        print("Failed to query database")
+        status = '500 Internal Server Error'
+        result = '<p class="error">Error querying database</a>'
+        return result
 
     config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
 
     timeout = config.getint('session', 'timeout')
 
-    pwsize = 10
-    username = 'qwifi' + ''.join(random.sample(string.ascii_lowercase, pwsize))
-    password = ''.join(random.sample(string.ascii_lowercase, pwsize))
+    #pwsize = 10
+    #username = 'qwifi' + ''.join(random.sample(string.ascii_lowercase, pwsize))
+    #password = ''.join(random.sample(string.ascii_lowercase, pwsize))
+    pw_dict = pwgen.gen_user_pass()
+    username = pw_dict['username']
+    password = pw_dict['password']
 
     print 'Session mode: ' + config.get('session', 'mode')
 
