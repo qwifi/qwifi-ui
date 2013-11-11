@@ -93,10 +93,10 @@ def application(environ, start_response):
 
         enc = Encoder()
         im = enc.encode(code, {'width':200})
-        im.save("/var/www/qr.png")
+        im.save("/var/www/codes/qr.png")
         status = '200 OK'
 
-        formString = '<img src="/var/www/qr.png"/>'
+        formString = '<img src="/codes/qr.png"/>'
         formString += '<p>Username: %s</p>'   % username
         formString += '<p>Password: %s</p>'   % password
         formString += '<p>Session Length: %s' % timeout
