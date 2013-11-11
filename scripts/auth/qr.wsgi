@@ -99,7 +99,7 @@ def application(environ, start_response):
         form_string += '<p>Username: %s</p>' % username
         form_string += '<p>Password: %s</p>' % password
         if config.get('session', 'mode') == 'ap':
-            form_string += '<p>Session End: %s' % end
+            form_string += '<p>Session End: %s UTC' % end
         else:
             form_string += '<p>Session Length: %s' % timeout
             form_string += ' %s</p>' % timeout_units
