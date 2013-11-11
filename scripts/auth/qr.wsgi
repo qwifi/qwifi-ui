@@ -5,6 +5,10 @@ import qwifiutils
 import pwgen
 
 def application(environ, start_response):
+
+    #reads in the html code to be displayed
+    html = (open(environ['RESOURCE_BASE'] + '/html/qr.html', 'r').read())
+
     config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
     try:
         db = MySQLdb.connect(config.get('database', 'server'),
@@ -15,12 +19,24 @@ def application(environ, start_response):
     except:
         print("Failed to query database")
         status = '500 Internal Server Error'
-        result = '<p class="error">Error querying database</a>'
+        result = '<p class="error">Error querying database</p>'
         return result
 
     config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
 
     timeout = config.getint('session', 'timeout')
+    timeout_units = config.get('display', 'units') 
+
+    # converts timeout from seconds to value stored in timeout_units
+    # user might not like seeing that their session time is '432,000 seconds'
+    if timeout_units == 'minutes':  
+        timeout = timeout / 60  
+    elif timeout_units == 'hours':
+        timeout = timeout / 3600
+    elif timeout_units == 'days':
+        timeout = timeout / 86400
+    else:
+        timeout = timeout
 
     #pwsize = 10
     #username = 'qwifi' + ''.join(random.sample(string.ascii_lowercase, pwsize))
@@ -75,9 +91,19 @@ def application(environ, start_response):
 
     enc = Encoder()
     im = enc.encode(code, {'width':200})
-    im.save("/tmp/out.png")
+    im.save("/var/www/qr.png")
     status = '200 OK'
-    response_headers = [('Content-type', 'image/png')]
+
+    formString = '<img src="/var/www/qr.png"/>'
+    formString += '<p>Username: %s</p>'   % username
+    formString += '<p>Password: %s</p>'   % password
+    formString += '<p>Session Length: %s' % timeout
+    formString += ' %s</p>' % timeout_units
+
+    #adds the content to the html
+    response_body = html % {'returnMessage':formString}
+    response_headers = [('Content-Type', 'text/html'), ('Content-Length', str(len(response_body)))]
+
     start_response(status, response_headers)
 
-    return file("/tmp/out.png")
+    return response_body
