@@ -80,6 +80,8 @@ def application(environ, start_response):
                 c.execute(query)
                 query = "INSERT INTO radcheck SET username='%(username)s',attribute='Session-Timeout',op=':=',value='%(timeout)s';" % { 'username' : username, 'timeout' : timeout }
                 c.execute(query)
+                query = "INSERT INTO radcheck SET username='%(username)s',attribute='Simultaneous-Use',op=':=',value='1';" % { 'username' : username }
+                c.execute(query)
                 db.commit()
                 code = "WIFI:T:WPAEAP;S:%(ssid)s;P:%(password)s;H:false;U:%(username)s;E:PEAP;N:MSCHAPV2;X:%(timeout)s;;" % {'ssid': ssid, 'username' : username, 'password' : password, 'timeout': timeout}
 
