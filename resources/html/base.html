@@ -2,108 +2,9 @@
 <html>
 <head>
 <title>Qwifi Administration</title>
+
 <script src="/resources/js/jquery.min"></script>
-
-<style>
-body {
-	background-color: #003000;
-	margin: 0px;
-}
-
-p {
-	margin: 0px;
-}
-
-table.config {
-	margin-left: auto;
-	margin-right: auto;
-	color: #EBFFEB;
-	margin-bottom: 19px;
-}
-
-.configItem {
-	margin-bottom: 18px;
-}
-
-.configItem input {
-	margin-left: 9px;
-}
-
-input[type='submit'] {
-	float: right;
-}
-
-.title {
-	color: #EBFFEB;
-	font-size: 35px;
-	text-align: center;
-	width: 700px;
-	margin-top: 0px;
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 0px;
-	padding-bottom: 10px;
-	background-color: #008000;
-	border-top-left-radius: 10%% 50%%;
-	border-top-right-radius: 10%% 50%%;
-}
-
-.mainBody {
-	font-size: 18px;
-	margin-left: auto;
-	margin-right: auto;
-	width: 664px;
-	height: 664px;
-	color: #EBFFEB;
-	background-color: #008000;
-	padding: 18px;
-}
-
-.mainBody h1 {
-	margin-top: 0;
-	font-size: 25px;
-	font-weight: normal;
-	border-bottom-style: solid;
-	border-bottom-width: 1px;
-}
-
-.mainBody h2 {
-	margin-top: 0;
-	font-size: 20px;
-	font-weight: normal;
-	text-decoration: underline;
-}
-
-.linkBar {
-	color: #EBFFEB;
-	text-align: center;
-	height: 30px;
-	width: 700px;
-	padding-top: 10px;
-	margin-left: auto;
-	margin-right: auto;
-	background-color: #F2F2F2;
-	border-top: 1px solid #ccc;
-	border-bottom: 1px solid #ccc;
-}
-
-.linkBar a {
-	color: #069;
-	font-weight: bold;
-	text-decoration: none;
-	padding: 8px 15px;
-	border-right: 1px solid #ccc;
-}
-
-.linkBar a:hover {
-	color: #c00;
-	background-color: #fff;
-}
-
-#home {
-	border-left: 1px solid #ccc;
-}
-</style>
+<link href="/resources/css/base.css" rel="stylesheet" type="text/css">
 
 </head>
 <div class="title">
@@ -119,7 +20,6 @@ input[type='submit'] {
 <div class="mainBody">%(returnMessage)s</div>
 
 <script>
-
 //Validates numbers, for browsers that don't support HTML5 input types
 $(".sessionsForm").submit(function(){
 	var value = $("#timeout").val()
