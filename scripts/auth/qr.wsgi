@@ -10,6 +10,8 @@ def application(environ, start_response):
 
     config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
     connection = True
+    error_string = ''
+    form_string = ''
     try:
         db = MySQLdb.connect(config.get('database', 'server'),
             config.get('database', 'username'),
@@ -19,14 +21,22 @@ def application(environ, start_response):
     except:
         print("Failed to query database")
         status = '500 Internal Server Error'
+        error_string += '<p>Could not connect to the Database</p>'
 	connection = False
 
-    if connection:
+    try:
+        timeout = config.getint('session', 'timeout')
+    except ValueError:
+        error_string += '<p class="error">Unable to read timeout from configuration file</p>' 
+
+    timeout_units = config.get('display', 'units')
+    if timeout_units != 'seconds' and timeout_units != 'minutes' and timeout_units != 'hours' and timeout_units != 'days':
+        error_string +='<p class="error">Unable to read timeout units from configuration file</p>'
+
+    if connection and error_string == '':
         # We've succesfully connected to the database
         config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
 
-        timeout = config.getint('session', 'timeout')
-        timeout_units = config.get('display', 'units')
 
         # converts timeout from seconds to value stored in timeout_units
         # user might not like seeing that their session time is '432,000 seconds'
@@ -95,7 +105,7 @@ def application(environ, start_response):
         im.save("/var/www/codes/qr.png")
         status = '200 OK'
 
-        form_string = '<img src="/codes/qr.png"/>'
+        form_string += '<img src="/codes/qr.png"/>'
         form_string += '<p>Username: %s</p>' % username
         form_string += '<p>Password: %s</p>' % password
         if config.get('session', 'mode') == 'ap':
@@ -104,7 +114,8 @@ def application(environ, start_response):
             form_string += '<p>Session Length: %s' % timeout
             form_string += ' %s</p>' % timeout_units
     else:
-        form_string = '<p>Could not connect to the Database</p>'
+        form_string += error_string
+        status = '500 Internal Server Error'
 
 
     # adds the content to the html
