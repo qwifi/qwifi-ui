@@ -38,16 +38,15 @@ def application(environ, start_response):
         config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
 
 
+        display_timeout = timeout
         # converts timeout from seconds to value stored in timeout_units
         # user might not like seeing that their session time is '432,000 seconds'
         if timeout_units == 'minutes':
-            timeout = timeout / 60
+            display_timeout = timeout / 60
         elif timeout_units == 'hours':
-            timeout = timeout / 3600
+            display_timeout = timeout / 3600
         elif timeout_units == 'days':
-            timeout = timeout / 86400
-        else:
-            timeout = timeout
+            display_timeout = timeout / 86400
 
         pw_dict = pwgen.gen_user_pass()
         username = 'qwifi' + pw_dict['username']
@@ -113,7 +112,7 @@ def application(environ, start_response):
         if config.get('session', 'mode') == 'ap':
             form_string += '<p>Session End: %s UTC' % end
         else:
-            form_string += '<p>Session Length: %s' % timeout
+            form_string += '<p>Session Length: %s' % display_timeout
             form_string += ' %s</p>' % timeout_units
     else:
         form_string += error_string
