@@ -1,6 +1,7 @@
+ServerName qwifi
+
 <VirtualHost *:80>
 	ServerAdmin webmaster@localhost
-	ServerName qwifi
 
 	DocumentRoot /var/www
 	<Directory />
