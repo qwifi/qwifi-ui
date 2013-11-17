@@ -29,14 +29,13 @@ def application(environ, start_response):
 	# Reads in the timeout from the configuation file
         timeout = config.getint('session', 'timeout')
     except ValueError:
-        error_string = '<p class="error">Unable to read timeout from configuration file.</p>'
-	error_string +='<p class="error">Using default value of 10.</p><br>'
+        error_string = '<p class="error">Unable to read timeout from configuration file. Using default value of 10.</p><br>'
 	timeout = 10
+	timeout_units = 'seconds'
 
     units = config.get('display', 'units')
     if units != 'seconds' and units != 'minutes' and units != 'hours' and units != 'days':
-        error_string +='<p class="error">Unable to read timeout units from configuration file.</p>'
-	error_string +='<p class="error">Using default value of seconds</p><br>'
+        error_string +='<p class="error">Unable to read timeout units from configuration file. Using default value of seconds.</p><br>'
 	units = 'seconds'
 
     # Next 5 lines create the content(forms) to be displayed on the webpage.

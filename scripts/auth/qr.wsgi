@@ -21,7 +21,7 @@ def application(environ, start_response):
     except:
         print("Failed to query database")
         status = '500 Internal Server Error'
-        error_string += '<p>Could not connect to the Database</p>'
+        error_string += '<p class="error">Could not connect to the Database</p>'
 	connection = False
 
     try:
