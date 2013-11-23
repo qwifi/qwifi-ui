@@ -46,10 +46,12 @@ def application(environ, start_response):
                     result += "<li>%(station_id)s</li>" % { 'station_id' : station_id }
 
                 result += '</ul>'
-                result += '<a class="revoke" href="/sessions/revoke?user=%(username)s">Revoke Access Code</a>' % { 'username' : username }
             else:
-                result += "None"
+                query = "SELECT DISTINCT username FROM radcheck WHERE username LIKE 'qwifi%';"
+                cursor.execute(query)
+                username = cursor.fetchall()[0][0]
 
+            result += '<a class="revoke" href="/sessions/revoke?user=%(username)s">Revoke Access Code</a>' % { 'username' : username }
             result += "</ul></div>"
 
         else:
