@@ -49,9 +49,14 @@ def application(environ, start_response):
             else:
                 query = "SELECT DISTINCT username FROM radcheck WHERE username LIKE 'qwifi%';"
                 cursor.execute(query)
-                username = cursor.fetchall()[0][0]
+                query_result = cursor.fetchall()
+                if query_result:
+                    username = query_result[0][0]
+                    result += '<div id="sessions"><h2>%(username)s</h2>' % { 'username' : username }
+                    result += '<a class="revoke" href="/sessions/revoke?user=%(username)s">Revoke Access Code</a>' % { 'username' : username }
+                else:
+                    result += '<p class="error">No active access codes</p>'
 
-            result += '<a class="revoke" href="/sessions/revoke?user=%(username)s">Revoke Access Code</a>' % { 'username' : username }
             result += "</ul></div>"
 
         else:
