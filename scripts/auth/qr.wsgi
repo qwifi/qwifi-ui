@@ -2,6 +2,7 @@ from qrencode import Encoder
 import MySQLdb
 import qwifiutils
 import pwgen
+import sys
 
 def application(environ, start_response):
 
@@ -51,6 +52,25 @@ def application(environ, start_response):
         pw_dict = pwgen.gen_user_pass()
         username = 'qwifi' + pw_dict['username']
         password = pw_dict['password']
+
+        x = 0
+        while x < 3:
+            query = "SELECT username FROM radius.radacct WHERE username = '%s';" %username
+            c.execute(query)
+            result = c.fetchall()
+
+            if len(result) > 0:
+                #generate new username and password
+                pw_dict = pwgen.gen_user_pass()
+                username = 'qwifi' + pw_dict['username']
+                password = pw_dict['password']
+                x = x + 1
+
+                if x == 3:
+                    print 'ERROR: Program could not generate a unique username.'
+                    sys.exit()
+            else:
+                break
 
         print 'Session mode: ' + config.get('session', 'mode')
 
