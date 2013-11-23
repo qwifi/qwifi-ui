@@ -53,6 +53,7 @@ def application(environ, start_response):
                 if query_result:
                     username = query_result[0][0]
                     result += '<div id="sessions"><h2>%(username)s</h2>' % { 'username' : username }
+                    result += '<ul><li>No Active Sessions</li></ul>'
                     result += '<a class="revoke" href="/sessions/revoke?user=%(username)s">Revoke Access Code</a>' % { 'username' : username }
                 else:
                     result += '<p class="error">No active access codes</p>'
