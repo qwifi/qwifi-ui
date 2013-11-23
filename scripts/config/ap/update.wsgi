@@ -88,9 +88,12 @@ def application(environ, start_response):
         result_message = '<p class="error">SSID given is not in the correct format.</p>'
     else:
         hostapd_conf_path = environ['HOSTAPD_CONF']
-        temp_path = '/tmp/hostapd.conf'
         if not hostapd_conf_path:
             hostapd_conf_path = '/etc/hostapd.conf'
+
+        shutil.copyfile(hostapd_conf_path, '/tmp/hostapd.conf.bck')
+
+        temp_path = '/tmp/hostapd.conf'
 
         try:
             infile = open(hostapd_conf_path)
@@ -111,6 +114,7 @@ def application(environ, start_response):
 
             if result is not 0:
                 result_message = '<p class="error">Failed to restart hostapd. See log for details.</p>'
+                shutil.copyfile('/tmp/hostapd.conf.bck', hostapd_conf_path)
             else:
                 result_message = '<table class="config">'
                 result_message += '<tr><td>SSID:</td><td>%s</td></tr>' % ssid
