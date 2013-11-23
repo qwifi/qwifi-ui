@@ -30,10 +30,10 @@ def application(environ, start_response):
         else:
             form_string += '<div class="configItem"><input name="session_mode" value="ap" type="radio" />Access Point</div>'
 
-        form_string += '<h2>RADIUS Server</h2>'
-        form_string += '<div class="configItem">IP Address<input disabled id="ipAddress" name="ip_address" value="%s" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" title="(e.x. 192.168.10.2)" required /></div>\n' % ip_address
-        form_string += '<div class="configItem">Default Gateway<input disabled id="defGateway" name="default_gateway" value="%s" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" title=" (e.x. 192.168.10.5)" required/></div>\n' % default_gateway
-        form_string += '<div class="configItem">Subnet Mask<input disabled id="subnetMask" name="subnet_mask" value="%s" pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" title="(e.x. 255.255.255.1)" required/></div>\n' % subnet_mask
+        #form_string += '<h2>RADIUS Server</h2>'
+        #form_string += '<div class="configItem">IP Address<input disabled id="ipAddress" name="ip_address" value="%s" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" title="(e.x. 192.168.10.2)" required /></div>\n' % ip_address
+        #form_string += '<div class="configItem">Default Gateway<input disabled id="defGateway" name="default_gateway" value="%s" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" title=" (e.x. 192.168.10.5)" required/></div>\n' % default_gateway
+        #form_string += '<div class="configItem">Subnet Mask<input disabled id="subnetMask" name="subnet_mask" value="%s" pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" title="(e.x. 255.255.255.1)" required/></div>\n' % subnet_mask
         form_string += '<input type="submit" value="Apply" />'
     
 
