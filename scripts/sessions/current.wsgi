@@ -19,18 +19,45 @@ def application(environ, start_response):
 
         result = "<h1>Active Sessions</h1>"
 
-        rows = cursor.fetchall()
+        if (config.get('session', 'mode') == 'device'):
+            result += '<table id="sessions"/>'
 
-        if rows:
-            for row in rows:
-                username = row[0]
-                station_id = row[1].replace('-', ':')
-                result += "%(username)s %(station_id)s <a href=\"/sessions/revoke?user=%(username)s&id=%(station_id)s\">Revoke</a><br />" % {'username' : username, 'station_id' : station_id}
+            rows = cursor.fetchall()
+
+            if rows:
+                for row in rows:
+                    username = row[0]
+                    station_id = row[1].replace('-', ':')
+                    result += "<tr><td>%(username)s</td><td>%(station_id)s</td><td><a href=\"/sessions/revoke?user=%(username)s&id=%(station_id)s\">Revoke</a></td></tr>" % {'username' : username, 'station_id' : station_id}
+            else:
+                result += "None"
+
+            result += '</table>'
+        elif (config.get('session', 'mode') == 'ap'):
+            rows = cursor.fetchall()
+
+            if rows:
+                username = rows[0][0]
+                result += '<div id="sessions">%(username)s:' % { 'username' : username }
+                result += '<ul>'
+
+                for row in rows:
+                    station_id = row[1].replace('-', ':')
+                    result += "<li>%(station_id)s</li>" % { 'station_id' : station_id }
+
+                result += '</ul>'
+                result += '<a class="revoke" href="/sessions/revoke?user=%(username)s">Revoke Access Code</a>' % { 'username' : username }
+            else:
+                result += "None"
+
+            result += "</ul></div>"
+
         else:
-            result += "None"
+            result = '<p class="error">Unrecognized access mode.</a>'
 
-    except:
+    except MySQLdb.Error, e:
         print("Failed to query database")
+        print e
         status = '500 Internal Server Error'
         result = '<p class="error">Error querying database</a>'
 

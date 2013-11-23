@@ -3,14 +3,11 @@ from subprocess import call
 from cgi import parse_qs
 import qwifiutils
 
-def validate_input(username, station_id):
-    if not username:
-        return '<p class="error">Invalid user argument</p>'
+def validate_username(username):
+    return username != '' and username != '%(username)s'
 
-    if not station_id:
-        return '<p class="error">Invalid id argument</p>'
-
-    return ''
+def validate_station_id(station_id):
+    return station_id != ''
 
 def application(environ, start_response):
     status = '200 OK'
@@ -21,14 +18,18 @@ def application(environ, start_response):
     query_dictionary = parse_qs(environ['QUERY_STRING'])
 
     username = query_dictionary.get('user', [''])[0]
-
     station_id = query_dictionary.get('id', [''])[0]
 
-    result = validate_input(username, station_id)
+    config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
 
-    if not result:
+    if not validate_username(username):
+        result = '<p class="error">Invalid user argument</p>'
+    elif (config.get('session', 'mode') == 'device') and not (validate_station_id(station_id)):
+        result = '<p class="error">Invalid id argument</p>'
+    else:
+        addresses = []
+
         try:
-            config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
             db = MySQLdb.connect(config.get('database', 'server'),
                 config.get('database', 'username'),
                 config.get('database', 'password'),
@@ -36,20 +37,30 @@ def application(environ, start_response):
             cursor = db.cursor()
 
             query = "INSERT INTO radcheck (username, attribute, op, value) VALUES ('%s', 'Auth-Type', ':=', 'Reject');" % username
-
+            print query
             cursor.execute(query)
+            # query = "DELETE FROM radcheck where username='%s'" % username
+            # cursor.execute(query)
             db.commit()
+
+            if (config.get('session', 'mode') == 'device'):
+                addresses += station_id
+                result = '<p class="success">Revocation of access for station id %s successful.</p>' % station_id
+            else:
+                query = "SELECT callingstationid FROM radacct WHERE radacct.acctstoptime is NULL AND username='%s';" % username
+                cursor.execute(query)
+                addresses = [result[0] for result in cursor.fetchall()]
+                result = '<p class="success">Revocation of access for code "%s" successful.</p>' % username
         except:
             db.rollback()
             status = '500 Internal Server Error'
             result = '<p class="success">Failed to update database</p>'
 
-        hostapd_result = call(["/usr/sbin/hostapd_cli", "disassociate", station_id])
-
-        if hostapd_result is 0:
-            result = '<p class="success">Revocation of access for station id %s successful</p>' % station_id
-        else:
-            result = '<p class="error">Revocation of access for station id %s failed (code %s)</p>' % (station_id, str(hostapd_result))
+        for address in addresses:
+            hostapd_result = call(["/usr/sbin/hostapd_cli", "disassociate", station_id])
+            if hostapd_result is not 0:
+                result = '<p class="error">Revocation of access for username "%s" and station id "%s" failed (code %s).</p>' % (username, station_id, str(hostapd_result))
+                break
 
     start_response(status, response_headers)
 
