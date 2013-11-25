@@ -45,7 +45,7 @@ def application(environ, start_response):
                     station_id = row[1].replace('-', ':')
                     result += "<li>%(station_id)s</li>" % { 'station_id' : station_id }
 
-                result += '</ul>'
+                result += '</ul><a class="revoke" href="/sessions/revoke?user=%(username)s">Revoke Access Code</a>' % { 'username' : username }
             else:
                 query = "SELECT DISTINCT username FROM radcheck WHERE username LIKE 'qwifi%';"
                 cursor.execute(query)
@@ -56,12 +56,9 @@ def application(environ, start_response):
                     result += '<ul><li>No Active Sessions</li></ul>'
                     result += '<a class="revoke" href="/sessions/revoke?user=%(username)s">Revoke Access Code</a>' % { 'username' : username }
                 else:
-                    result += '<p class="error">No active access codes</p>'
+                    result += '<p class="error">No active access codes.</p>'
 
-            result += "</ul></div>"
-
-        else:
-            result = '<p class="error">Unrecognized access mode.</a>'
+            result += "</div>"
 
     except MySQLdb.Error, e:
         print("Failed to query database")
