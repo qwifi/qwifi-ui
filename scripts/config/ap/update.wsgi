@@ -60,6 +60,11 @@ def application(environ, start_response):
         return response_body  # sends the html to the user's web browser.
     else:
         if config.get('session', 'mode') != session_mode:
+
+            config.set('session', 'mode', session_mode)
+            with open(config_path, 'wb') as config_file:
+                config.write(config_file)
+
             try:
                 print 'Session mode changed, culling database'
                 # remove all access codes if we're switching session modes
@@ -78,11 +83,6 @@ def application(environ, start_response):
                     response_headers = [('Content-Type', 'text/html'), ('Content-Length', str(len(response_body)))]
                     start_response(status, response_headers)
                     return response_body  # sends the html to the user's web browser.
-
-        config.set('session', 'mode', session_mode)
-
-    with open(config_path, 'wb') as config_file:
-        config.write(config_file)
 
     if not legal_ssid(ssid):
         result_message = '<p class="error">SSID given is not in the correct format.</p>'

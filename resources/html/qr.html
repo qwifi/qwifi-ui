@@ -1,9 +1,20 @@
 <html>
 <link href="/resources/css/base.css" rel="stylesheet" type="text/css">
-
+<head>
+<meta charset="UTF-8" />
+<script src="/resources/js/jquery.min"></script>
+<script>
+	(function poll() {
+		setTimeout(function() {
+			$("#qrcore").load("/auth/qrcore");
+			poll();
+		}, 1000);
+	})();
+</script>
+</head>
 <body class="qrBody">
 
-<div class="qrMainBody">%(returnMessage)s</div>
+	<div class="qrMainBody">%(returnMessage)s</div>
 
 </body>
 
