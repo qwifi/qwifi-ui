@@ -40,7 +40,7 @@ ServerName qwifi
 
 	SetEnv CONFIGURATION_FILE /var/www/config/current
 	SetEnv RESOURCE_BASE /usr/local/wsgi/resources
-	SetEnv HOSTAPD_CONF /etc/hostapd.conf
+	SetEnv HOSTAPD_CONF /etc/hostapd/hostapd.conf
 
 	ErrorLog ${APACHE_LOG_DIR}/error.log
 
