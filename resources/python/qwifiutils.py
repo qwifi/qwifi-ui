@@ -28,7 +28,7 @@ def get_config(config_path):
 
 def get_ssid(hostapd_conf_path):
     if not hostapd_conf_path:
-        hostapd_conf_path = '/etc/hostapd.conf'
+        hostapd_conf_path = '/etc/hostapd/hostapd.conf'
 
     ssid = 'qwifi'
 

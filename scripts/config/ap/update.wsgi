@@ -89,7 +89,7 @@ def application(environ, start_response):
     else:
         hostapd_conf_path = environ['HOSTAPD_CONF']
         if not hostapd_conf_path:
-            hostapd_conf_path = '/etc/hostapd.conf'
+            hostapd_conf_path = '/etc/hostapd/hostapd.conf'
 
         shutil.copyfile(hostapd_conf_path, '/tmp/hostapd.conf.bck')
 
