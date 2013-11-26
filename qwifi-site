@@ -32,6 +32,7 @@ ServerName qwifi
 	WSGIScriptAliasMatch / /usr/local/wsgi/scripts/index.wsgi
 	WSGIDaemonProcess wsgi python-path=/usr/local/wsgi/resources/python
 	WSGIProcessGroup wsgi
+	WSGIApplicationGroup %{GLOBAL}
 
 	<Directory /usr/local/wsgi/scripts>
 		Order allow,deny
