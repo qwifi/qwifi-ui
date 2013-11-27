@@ -37,8 +37,8 @@ input[type='submit'] {
 	margin-bottom: 0px;
 	padding-bottom: 10px;
 	background-color: #008000;
-	border-top-left-radius: 10%% 50%%;
-	border-top-right-radius: 10%% 50%%;
+	border-top-left-radius: 10% 50%;
+	border-top-right-radius: 10% 50%;
 }
 
 .mainBody {
