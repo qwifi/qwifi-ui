@@ -1,13 +1,14 @@
-import ConfigParser, os
-import qwifiutils
+import qwificore
 
 def application(environ, start_response):
+    config_path = environ['CONFIGURATION_FILE']
+    config = qwificore.get_config(config_path)
+
     ip_address = "192.168.52.1"
     default_gateway = "159.116.10.2"
     subnet_mask = "255.255.255.1"
 
-    ssid = qwifiutils.get_ssid(environ['HOSTAPD_CONF'])
-    config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
+    ssid = qwificore.get_ssid(environ['HOSTAPD_CONF'])
     session_mode = config.get('session', 'mode')
 
     #If the session_mode value is malformed in the config file, we'll just shut down.

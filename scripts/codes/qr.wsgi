@@ -1,10 +1,10 @@
 from qrencode import Encoder
 from types import StringType
-import qwifiutils
+import qwificore
 
 def application(environ, start_response):
 
-    session_info = qwifiutils.get_session_info(environ['CONFIGURATION_FILE'], environ['HOSTAPD_CONF'])
+    session_info = qwificore.get_session_info(environ['CONFIGURATION_FILE'], environ['HOSTAPD_CONF'])
 
     result = ''
     if type(session_info) is StringType:

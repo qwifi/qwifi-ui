@@ -1,6 +1,6 @@
 from cgi import parse_qs, escape
 import ConfigParser, os
-import qwifiutils
+import qwificore
 
 def application(environ, start_response):
     html = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read())  # reads in HTML
@@ -35,7 +35,7 @@ def application(environ, start_response):
         result_message = '<p class="success">Changes saved.</p>'
 
         config_path = environ['CONFIGURATION_FILE']
-        config = qwifiutils.get_config(config_path)
+        config = qwificore.get_config(config_path)
 
         config.set('session', 'timeout', timeout)
         config.set('display', 'units', timeUnit)

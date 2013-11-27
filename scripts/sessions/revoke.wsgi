@@ -1,7 +1,7 @@
 import MySQLdb
 from subprocess import call
 from cgi import parse_qs
-import qwifiutils
+import qwificore
 
 def validate_username(username):
     return username != '' and username != '%(username)s'
@@ -20,7 +20,7 @@ def application(environ, start_response):
     username = query_dictionary.get('user', [''])[0]
     station_id = query_dictionary.get('id', [''])[0]
 
-    config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
+    config = qwificore.get_config(environ['CONFIGURATION_FILE'])
 
     if not validate_username(username):
         result = '<p class="error">Invalid user argument</p>'

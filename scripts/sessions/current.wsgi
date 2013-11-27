@@ -1,5 +1,5 @@
 import MySQLdb
-import qwifiutils
+import qwificore
 
 def application(environ, start_response):
     status = '200 OK'
@@ -9,7 +9,7 @@ def application(environ, start_response):
     result = ''
 
     try:
-        config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
+        config = qwificore.get_config(environ['CONFIGURATION_FILE'])
         db = MySQLdb.connect(config.get('database', 'server'),
             config.get('database', 'username'),
             config.get('database', 'password'),

@@ -80,8 +80,7 @@ def get_session_info(config_path, hostapd_conf_path):
     username = 'qwifi' + pw_dict['username']
     password = pw_dict['password']
 
-    x = 0
-    while x < 3:
+    for x in range (3):
         query = "SELECT username FROM radius.radacct WHERE username = '%s';" % username
         c.execute(query)
         result = c.fetchall()

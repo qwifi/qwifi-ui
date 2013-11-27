@@ -1,10 +1,9 @@
 from cgi import parse_qs, escape
-import ConfigParser
 import os
 import re
 import shutil
 import subprocess
-import qwifiutils
+import qwificore
 import MySQLdb
 
 def legal_ssid(test_ssid):
@@ -50,7 +49,7 @@ def application(environ, start_response):
     result_message = '<p class="error">Default message (this is a bug)'
 
     config_path = environ['CONFIGURATION_FILE']
-    config = qwifiutils.get_config(config_path)
+    config = qwificore.get_config(config_path)
 
     if not (session_mode == 'device' or session_mode == 'ap'):
         result_message = '<p class="error">Invalid session mode: %s</p>' % session_mode

@@ -1,7 +1,6 @@
 from cgi import parse_qs, escape
-import ConfigParser
 import os
-import qwifiutils
+import qwificore
 
 time_unit_multipliers = { 'minutes': 60, 'hours': 3600, 'days': 86400 }
 
@@ -19,7 +18,7 @@ def generate_timeout_units(units):
 
 def application(environ, start_response):
     # Pulls in the configuration file.
-    config = qwifiutils.get_config(environ['CONFIGURATION_FILE'])
+    config = qwificore.get_config(environ['CONFIGURATION_FILE'])
 
     # Reads in the html code to be displayed
     html = (open(environ['RESOURCE_BASE'] + '/html/base.html', 'r').read())
