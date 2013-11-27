@@ -7,8 +7,9 @@ def application(environ, start_response):
 
     timeout_units = "seconds"  # set a default value
 
+    result = ''
     if type(session_info) is StringType:
-        print error_string
+        print session_info
         status = '500 Internal Server Error'
     else:
         if 'timeout' in session_info:  # we have a relative timeout
