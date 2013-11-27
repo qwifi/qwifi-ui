@@ -1,21 +1,31 @@
-<html>
-<link href="/resources/css/base.css" rel="stylesheet" type="text/css">
+<!DOCTYPE html>
+<html lang="en">
 <head>
+<title>QR Code</title>
+<link href="/resources/css/base.css" rel="stylesheet" type="text/css" />
 <meta charset="UTF-8" />
 <script src="/resources/js/jquery.min"></script>
 <script>
 	(function poll() {
 		setTimeout(function() {
-			$("#qrcore").load("/auth/qrcore");
+			$("#text").load("/codes/html");
+
+			var preload = new Image();
+			preload.onload = function() {
+				$("#qr").html(preload);
+			}
+			preload.src = "/codes/qr?" + new Date().getTime();
+
 			poll();
 		}, 1000);
 	})();
 </script>
 </head>
 <body class="qrBody">
-
-	<div class="qrMainBody">%(returnMessage)s</div>
-
+	<div class="qrMainBody">
+		<div id="qr"></div>
+		<div id="text"></div>
+	</div>
 </body>
 
 </html>

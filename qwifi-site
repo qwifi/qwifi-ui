@@ -24,7 +24,6 @@ ServerName qwifi
 	</Directory>
 
 	Alias /config/current /var/www/config/current
-	Alias /codes /var/www/codes
 	Alias /resources/ /usr/local/wsgi/resources/
 
 	WSGIScriptAliasMatch ^/(.*)/$ /usr/local/wsgi/scripts/$1/index.wsgi
