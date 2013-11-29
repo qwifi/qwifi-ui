@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Qwifi Administration</title>
+
+<script src="/resources/js/jquery.min"></script>
+<link href="/resources/css/base.css" rel="stylesheet" type="text/css">
+
+</head>
+<div class="title">
+	<p>Qwifi Administration</p>
+</div>
+
+<div class="linkBar">
+	<a href="/" id="home">Home</a> <a href="/config/ap">Access Point </a> <a
+		href="/sessions/current">Active Sessions</a> <a href="/auth/qr"
+		target="_blank">Get a QR Code</a>
+</div>
+
+<div class="mainBody"><table class="config"><tr><td>Timeout (in seconds):</td><td>72000</td></tr><tr><td>Time Units:</td><td>hours</td></tr></table><p class="success">Changes saved.</p></div>
+
+<script>
+//Validates numbers, for browsers that don't support HTML5 input types
+$(".sessionsForm").submit(function(){
+	var value = $("#timeout").val()
+	var sendPage = false;
+	var intRegex = /^\d+$/;
+	if(intRegex.test(value)) {
+		sendPage = true;
+	}
+	else {
+		alert('Please enter a number.');
+		sendPage = false;
+	}
+	return sendPage;
+});
+
+
+$(".apForm").submit(function(){
+
+	//Validate the IP Address
+	/*var sendPage = false;
+	var ip = $("#ipAddress").val()
+	var validIP = false;
+	var ipRegex = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
+	if(ipRegex.test(ip)) {
+		validIP = true;
+	}
+	else {
+		alert('Please enter a valid IP address.');
+		validIP = false;
+	}
+
+	//Validate the Default Gateway
+	var gateway = $("#defGateway").val()
+	var validGateway = false;
+	var gatewayRegex = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
+	if(gatewayRegex.test(gateway)) {
+		validGateway = true;
+	}
+	else {
+		alert('Please enter a valid Default Gateway.');
+		validGateway = false;
+	}
+	
+	//Validate the Subnet Mask
+	var subnet = $("#subnetMask").val()
+	var validSubnet = false;
+	var subnetRegex =/^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
+	if(subnetRegex.test(subnet)) {
+		validSubnet = true;
+	}
+	else {
+		alert('Please enter a valid Subnet Mask.');
+		validSubnet = false;
+	}
+
+	//If all 3 fields are valid, ask the user for confirmation before submitting
+	if(validIP && validGateway && validSubnet) {*/
+		sendPage = confirm("Updating access point settings will drop all active connections. Continue?");
+	//}
+	return sendPage;
+});
+
+</script>
+
+</html>
