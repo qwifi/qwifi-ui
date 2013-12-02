@@ -15,13 +15,13 @@ def timeout_test(timeout, time_unit):
     # Generate File names for diff
     # e.x. output/10seconds.html, expected/sessionsForm/10seconds.html
     file_name = `timeout` + time_unit + '.html'
-    generated_html_path = 'output/' + file_name 
+    generated_html_path = 'output/timeout/' + file_name 
     expected_html_path = 'expected/sessionsForm/' + file_name
 
     # Start with a fresh page every time
     go(url)
 
-    print '\n**Testing timeout of ' + `timeout` + ' ' + time_unit + '****'
+    print '\n**Testing timeout of ' + `timeout` + ' ' + time_unit + '**'
 
     code(200)
     # Fill the HTML forms with test values and submit
@@ -35,15 +35,16 @@ def timeout_test(timeout, time_unit):
     result = subprocess.call(command.split(), shell=False)
 
     if result is not 0:
-      print 'Test failed'
+        print 'Test failed'
     else:
-      print 'Test Passed'
+        print 'Test Passed'
+
 
 for i in range(1,5):
-  timeout_test(i * 10,'seconds')
-  timeout_test(i * 10,'minutes')
-  timeout_test(i * 10,'hours')
-  timeout_test(i * 10,'days')
+    timeout_test(i * 10,'seconds')
+    timeout_test(i * 10,'minutes')
+    timeout_test(i * 10,'hours')
+    timeout_test(i * 10,'days')
 
 
 
