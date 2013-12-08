@@ -15,7 +15,7 @@ def application(environ, start_response):
             config.get('database', 'password'),
             config.get('database', 'database'))
         cursor = db.cursor()
-        cursor.execute("SELECT radcheck.username, radacct.callingstationId FROM radcheck INNER JOIN radacct ON radcheck.username=radacct.username WHERE radacct.acctstoptime is NULL AND radcheck.attribute='Cleartext-Password';")
+        cursor.execute("SELECT radcheck.username, radacct.callingstationId FROM radcheck INNER JOIN radacct ON radcheck.username=radacct.username WHERE radacct.acctstoptime is NULL AND radcheck.attribute='Cleartext-Password' AND radcheck.username like 'qwifi%';")
 
         result = "<h1>Active Sessions</h1>"
 
@@ -37,28 +37,29 @@ def application(environ, start_response):
             rows = cursor.fetchall()
 
             if rows:
-                username = rows[0][0]
+                username = rows[0][0]  # we assume no more than one access code exists when in AP mode
                 result += '<div id="sessions">%(username)s:' % { 'username' : username }
                 result += '<ul>'
 
                 for row in rows:
-                    station_id = row[1].replace('-', ':')
-                    result += "<li>%(station_id)s</li>" % { 'station_id' : station_id }
+                    if row[0] != username:
+                        result += '<li class="error">Second distinct username found--this is a bug</li>'
+                    else:
+                        station_id = row[1].replace('-', ':')
+                        result += "<li>%(station_id)s</li>" % { 'station_id' : station_id }
 
-                result += '</ul><a class="revoke" href="/sessions/revoke?user=%(username)s">Revoke Access Code</a>' % { 'username' : username }
+                result += '</ul><a class="revoke" href="/sessions/revoke?user=%(username)s">Revoke Access Code</a></div>' % { 'username' : username }
             else:
                 query = "SELECT DISTINCT username FROM radcheck WHERE username LIKE 'qwifi%';"
                 cursor.execute(query)
                 query_result = cursor.fetchall()
                 if query_result:
                     username = query_result[0][0]
-                    result += '<div id="sessions"><h2>%(username)s</h2>' % { 'username' : username }
+                    result += '<div id="sessions">%(username)s' % { 'username' : username }
                     result += '<ul><li>No Active Sessions</li></ul>'
-                    result += '<a class="revoke" href="/sessions/revoke?user=%(username)s">Revoke Access Code</a>' % { 'username' : username }
+                    result += '<a class="revoke" href="/sessions/revoke?user=%(username)s">Revoke Access Code</a></div>' % { 'username' : username }
                 else:
                     result += '<p class="error">No active access codes.</p>'
-
-            result += "</div>"
 
     except MySQLdb.Error, e:
         print("Failed to query database")

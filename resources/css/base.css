@@ -122,7 +122,7 @@ table#sessions {
 	margin: 0 auto;
 }
 
-div#sessions li {
+div.sessions li {
 	list-style-type: none;
 }
 
